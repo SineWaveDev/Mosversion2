@@ -48,13 +48,18 @@ class RetChangeDefaultSerializer(serializers.ModelSerializer):
 
 
 class SavecustomerSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
+    password2 = serializers.CharField(style={"input_type": "password"}, write_only=True,required=False)
     class Meta:
         model=CustomerMaster
         fields=['userId','username','group','firstName','lastName','emailId','contactNo','dob','photo','address','active','companyCode','sw_CustomerId','registration_Date','valid_Date','password','password2']
       
+        # extra_kwargs = {
+        #     'password': {'write_only':True}
+        # }
         extra_kwargs = {
-            'password': {'write_only':True}
+            'password': {'write_only':True},
+            'password': {'required': False},
+            'password2': {'required': False},
         }
   
 #<------------------ Validating  Password and ConformPasswordwhie Registration -------------->
