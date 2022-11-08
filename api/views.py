@@ -28,12 +28,12 @@ class SavePurch(APIView):
         except:
             scripno=0
 
-
+        # scriptSno=0
         if scripno==0 or None:
             sp=scripno+0
            
         else:
-            sp=scripno.scriptSno+1 or 0
+            sp=scripno.scriptSno+1
             print("SP",sp)
         
         if sn==0 or  None:
@@ -136,7 +136,6 @@ class RetScriptSum(APIView):
         opening_val = 0 if opening['opening_values'] is None else opening['opening_values']
         addition_val = 0 if addition['addition_values'] is None else addition['addition_values']
        
-
         context={
             "opening":opening_su,
             "addition":addition_su,
