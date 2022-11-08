@@ -19,36 +19,23 @@ from .renderers import UserRender
 class SavePurch(APIView):
     def post(self, request, format=None):
         try:
-            sn=TranSum.objects.latest('sno','scriptSno')
+            sn=TranSum.objects.latest('sno')
+          
+            # filter(group=request.data['group'])
             print("Summm",sn)
         except:
             sn=0
-        try:
-            scripno=TranSum.objects.latest('scriptSno')
-        except:
-            scripno=0
 
-        # scriptSno=0
-        if scripno==0 or None:
-            sp=scripno+0
-           
-        else:
-            sp=scripno.scriptSno+1
-            print("SP",sp)
-        
         if sn==0 or  None:
             sn=sn+1
         else:
             sn=sn.sno+1 or 0
     
         request.data['sno'] = sn
-        request.data['scriptSno'] = sp
-        # print('ss',request.data.get('sno'))
-        print('Script no--->',request.data.get('scriptSno'))
+       
         dic = copy.deepcopy(request.data)
         dic["balQty"] = request.data["qty"]
-       
-     
+    
         serializer = SavePurchSerializer(data=dic)
         # print('Dictionary=====>',dict)
         if serializer.is_valid():
@@ -161,7 +148,7 @@ class RetHolding(APIView):
         
         ls=[]
         for data in holding:
-            data_ls={'part':data['part'],'holdQty':int(data['total_balQty']),'invVal':float(data['invVal']),'mktVal':float(data['mktVal'])}
+            data_ls={'part':data['part'],'holdQty':int(data['total_balQty']),'invValue':float(data['invVal']),'mktVal':float(data['mktVal'])}
             ls.append(data_ls)
         return Response({'status':True,'msg':'done','data':ls})
 
@@ -253,7 +240,7 @@ class CustomerLogin(APIView):
             if user is not None: 
                 return Response({'status':True,'msg':'Login Success','data':serializer.data},status=status.HTTP_200_OK)
             else:
-                return Response({'errors':{'non_field_errors':['Username or Password is not Valid']}},status=status.HTTP_404_NOT_FOUND)
+                return Response({'status':False,'data':'Username or Password is not Valid'})
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 # <----------------- RetChangeDefault ----------------->        
