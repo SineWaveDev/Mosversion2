@@ -240,7 +240,7 @@ class CustomerLogin(APIView):
             if user is not None: 
                 return Response({'status':True,'msg':'Login Success','data':serializer.data},status=status.HTTP_200_OK)
             else:
-                return Response({'status':False,'data':'Username or Password is not Valid'})
+                return Response({'status':False,'msg':'Username or Password is not Valid','data':' '})
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 # <----------------- RetChangeDefault ----------------->        
