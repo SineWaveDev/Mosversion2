@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('purchTransDet/',views.SavePurch.as_view()),
+    path('SavePrimaryAPI/',views.SavePrimaryAPI.as_view()),
     path('purchTransSum/',views.RetTransSum.as_view()),
     path('retTransSumUpdate/<int:pk>',views.RetTransSumUpdate.as_view()),
     path('scriptSum/',views.RetScriptSum.as_view()),
@@ -14,6 +15,7 @@ urlpatterns = [
     path('retCustomer/',views.RetCustomer.as_view()),
     path('updateCustomer/<int:pk>',views.CustomerUpdadeDelete.as_view()),
     path('customerLogin/',views.CustomerLogin.as_view()),
-    path('retChangeDefault/',views.RetChangeDefault.as_view())
+    path('retChangeDefault/',views.RetChangeDefault.as_view()),
+
     # path('RetSalesSum/',sales.RetSalesSum.as_view()),   
 ]

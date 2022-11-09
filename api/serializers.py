@@ -9,6 +9,16 @@ class SavePurchSerializer(serializers.ModelSerializer):
     class Meta:
         model=TranSum
         fields=('trId','group','code','fy','againstType','sp','sno','scriptSno','part','fmr','isinCode','trDate','qty','rate','sVal','sttCharges','otherCharges','noteAdd','balQty','marketRate')
+
+class SavePurchSerializer1(serializers.ModelSerializer):
+    class Meta:
+        model=TranSum
+        fields=('trId','group','code','fy','againstType','sp','sno','scriptSno','part','fmr','isinCode','marketRate','HoldingValue','marketValue','avgRate','dayTrade','strategyDate','strategyTrigger')
+
+
+
+
+
 # <---------------Retriveing API ------------------>
 class RetTransSumSerializer(serializers.ModelSerializer):
     class Meta:
