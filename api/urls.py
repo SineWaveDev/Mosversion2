@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('purchTransDet/',views.SavePurch.as_view()),
-    path('SavePrimaryAPI/',views.SavePrimaryAPI.as_view()),
+    path('savePrimaryAPI/',views.SavePrimaryAPI.as_view()),
     path('purchTransSum/',views.RetTransSum.as_view()),
     path('retTransSumUpdate/<int:pk>',views.RetTransSumUpdate.as_view()),
     path('scriptSum/',views.RetScriptSum.as_view()),
