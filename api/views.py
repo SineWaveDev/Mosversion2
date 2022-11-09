@@ -18,11 +18,45 @@ from .renderers import UserRender
 # <-------------------- SavePurch API ---------------------->
 class SavePurch(APIView):
     def post(self, request, format=None):
+        group = self.request.query_params.get('group')
+        code = self.request.query_params.get('code')
+        againstType = self.request.query_params.get('againstType')
+        part = self.request.query_params.get('part')
+        try:
+            stu=TranSum.objects.filter(group='00001',code='00001',againstType='Shares',part='ACC.NS').values('scriptSno','sno')
+        except:
+            stu.sno=1
+        print("Stu--->",stu)
+        for data in stu:
+            scriptno=data['scriptSno']
+            sno1=data['sno']
+            # print("script no",scriptno)
+            # print("Sno--->",sno1)
+          
+            if scriptno ==0:
+                print("Primary ",scriptno)
+            else:
+                ss=sno1+1
+                # print('serial no',ss)
+                scriptno=scriptno
+                # print('script no',scriptno)
+
+                # print("Secondary")
+                request.data['sn']=ss
+                request.data['scriptSno']=scriptno
+                print("Serial no-->",request.data.get('sn'))
+                print("Script no-->",request.data.get('scriptSno'))
+       
+
+
+           
+
+
         try:
             sn=TranSum.objects.latest('sno')
           
             # filter(group=request.data['group'])
-            print("Summm",sn)
+            # print("Summm",sn)
         except:
             sn=0
 
@@ -32,6 +66,29 @@ class SavePurch(APIView):
             sn=sn.sno+1 or 0
     
         request.data['sno'] = sn
+        
+        # stu=TranSum.objects.latest('sno').filter(group='00001',code='00001',againstType='Shares',part='ACC.NS')
+        # print(stu)
+        # if stu[5]==0:
+        #     print('primary records')
+        # else:
+        #     print("Purchase Records")
+
+            # if stu[1]==0:
+            #     st=stu[1]+1
+            #     print(st)
+            # else:
+            #     print("No")
+            #     st=stu[1]+1
+            #     print("Stu-->",st)
+
+        
+           
+        # request.data['sno']=stu.scriptSno
+        # print("Req-->",request.data.get('scriptSno'))
+       
+
+        
        
         dic = copy.deepcopy(request.data)
         dic["balQty"] = request.data["qty"]
@@ -40,6 +97,9 @@ class SavePurch(APIView):
         # print('Dictionary=====>',dict)
         if serializer.is_valid():
             serializer.save() 
+            # stu=TranSum.objects.latest('sno')
+            # print(stu)
+           
             return Response({'status':True,'msg': 'You have successfully Created','data':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
