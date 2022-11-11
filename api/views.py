@@ -23,7 +23,8 @@ class SavePurch(APIView):
     
         serializer = SavePurchSerializer(data=dic)
         if serializer.is_valid():
-            serializer.save() 
+            serializer.save()
+            print("Saving Records---->",serializer.data)
           
             return Response({'status':True,'msg': 'You have successfully Created','data':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -52,26 +53,11 @@ class SavePrimaryAPI(APIView):
                 sn=sn+1
                 print("Secondary")
             request.data['sno'] = sn
-
-
-
-       
-        #     sn=0
-        # if sn==0 or  None:
-        #    print("Prrr")
-        # else:
-        #     sn=sn.sno+1 or 0
-        # request.data['sno'] = sn
-        
-        
-        
-
-        # s=primary['scriptSno']
-        # print(s)
-    
         serializer = SavePurchSerializer1(data=request.data)
+        
         if serializer.is_valid():
             serializer.save()
+            print("Primary Records---->",serializer.data)
             return Response({'status':True,'msg': 'You have successfully Created','data':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
