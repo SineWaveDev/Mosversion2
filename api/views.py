@@ -44,13 +44,14 @@ class SavePrimaryAPI(APIView):
         for data in primary:
             script_no=data['scriptSno']
             sn=data['sno']
+            serialno=0  if sn is None or 0 else sn
             # print("script_no",script_no)
             # print('Sno--->',sn)
             if script_no==0:
                 print('Primary')
                 pass
             else:
-                sn=sn+1
+                sn=serialno+1
                 print("Secondary")
             request.data['sno'] = sn
         serializer = SavePurchSerializer1(data=request.data)
