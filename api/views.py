@@ -22,35 +22,35 @@ class SavePurch(APIView):
         code = self.request.query_params.get('code')
         againstType = self.request.query_params.get('againstType')
         part = self.request.query_params.get('part')
-        try:
-            stu=TranSum.objects.filter(group='00001',code='00001',againstType='Shares',part='ACC.NS').values('scriptSno','sno')
-        except:
-            stu.sno=1
-        print("Stu--->",stu)
-        for data in stu:
-            scriptno=data['scriptSno']
-            sno1=data['sno']
-            # print("script no",scriptno)
-            # print("Sno--->",sno1)
+        # try:
+        #     stu=TranSum.objects.filter(group='00001',code='00001',againstType='Shares',part='ACC.NS').values('scriptSno','sno')
+        # except:
+        #     stu.sno=1
+        # print("Stu--->",stu)
+        # for data in stu:
+        #     scriptno=data['scriptSno']
+        #     sno1=data['sno']
+        #     # print("script no",scriptno)
+        #     # print("Sno--->",sno1)
           
-            if scriptno ==0:
-                print("Primary ",scriptno)
-            else:
-                ss=sno1+1
-                scriptno=scriptno
-                request.data['sn']=ss
-                request.data['scriptSno']=scriptno
-                print("Serial no-->",request.data.get('sn'))
-                print("Script no-->",request.data.get('scriptSno'))
-        try:
-            sn=TranSum.objects.latest('sno')
-        except:
-            sn=0
-        if sn==0 or  None:
-            sn=sn+1
-        else:
-            sn=sn.sno+1 or 0
-        request.data['sno'] = sn
+        #     if scriptno ==0:
+        #         print("Primary ",scriptno)
+        #     else:
+        #         ss=sno1+1
+        #         scriptno=scriptno
+        #         request.data['sn']=ss
+        #         request.data['scriptSno']=scriptno
+        #         print("Serial no-->",request.data.get('sn'))
+        #         print("Script no-->",request.data.get('scriptSno'))
+        # try:
+        #     sn=TranSum.objects.latest('sno')
+        # except:
+        #     sn=0
+        # if sn==0 or  None:
+        #     sn=sn+1
+        # else:
+        #     sn=sn.sno+1 or 0
+        # request.data['sno'] = sn
         
         dic = copy.deepcopy(request.data)
         dic["balQty"] = request.data["qty"]
