@@ -72,7 +72,7 @@ class SavePrimaryAPI(APIView):
         scriptSno=self.request.query_params.get('scriptSno') 
       
         try:
-            stu=TranSum.objects.filter(group='00001',code='00001',againstType='Shares',part='ACC.NS').values('scriptSno','sno')
+            stu=TranSum.objects.filter(group=group,code=code,againstType=againstType,part=part).values('scriptSno','sno')
         except:
             stu.sno=1
         print("Stu--->",stu)
