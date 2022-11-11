@@ -15,11 +15,7 @@ class SavePurchSerializer1(serializers.ModelSerializer):
         model=TranSum
         fields=('trId','group','code','fy','againstType','sp','sno','scriptSno','part','fmr','isinCode','marketRate','HoldingValue','marketValue','avgRate','dayTrade','strategyDate','strategyTrigger')
 
-    def create(self, validated_data):
-        # trDate = validated_data.pop('trDate')
-        user = TranSum.objects.create(**validated_data)
-        
-        return user
+   
 
 
 

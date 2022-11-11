@@ -45,6 +45,7 @@ class SavePrimaryAPI(APIView):
             script_no=data['scriptSno']
             sn=data['sno']
             serialno=0  if sn is None or 0 else sn
+            script_no=0  if script_no is None or 0 else script_no
             # print("script_no",script_no)
             # print('Sno--->',sn)
             if script_no==0:
