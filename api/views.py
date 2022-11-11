@@ -18,40 +18,6 @@ from .renderers import UserRender
 # <-------------------- SavePurch API ---------------------->
 class SavePurch(APIView):
     def post(self, request, format=None):
-        group = self.request.query_params.get('group')
-        code = self.request.query_params.get('code')
-        againstType = self.request.query_params.get('againstType')
-        part = self.request.query_params.get('part')
-        # try:
-        #     stu=TranSum.objects.filter(group='00001',code='00001',againstType='Shares',part='ACC.NS').values('scriptSno','sno')
-        # except:
-        #     stu.sno=1
-        # print("Stu--->",stu)
-        # for data in stu:
-        #     scriptno=data['scriptSno']
-        #     sno1=data['sno']
-        #     # print("script no",scriptno)
-        #     # print("Sno--->",sno1)
-          
-        #     if scriptno ==0:
-        #         print("Primary ",scriptno)
-        #     else:
-        #         ss=sno1+1
-        #         scriptno=scriptno
-        #         request.data['sn']=ss
-        #         request.data['scriptSno']=scriptno
-        #         print("Serial no-->",request.data.get('sn'))
-        #         print("Script no-->",request.data.get('scriptSno'))
-        # try:
-        #     sn=TranSum.objects.latest('sno')
-        # except:
-        #     sn=0
-        # if sn==0 or  None:
-        #     sn=sn+1
-        # else:
-        #     sn=sn.sno+1 or 0
-        # request.data['sno'] = sn
-        
         dic = copy.deepcopy(request.data)
         dic["balQty"] = request.data["qty"]
     
@@ -69,35 +35,33 @@ class SavePrimaryAPI(APIView):
         code = self.request.query_params.get('code')
         againstType = self.request.query_params.get('againstType')
         part = self.request.query_params.get('part') 
-        scriptSno=self.request.query_params.get('scriptSno') 
-      
-        try:
-            stu=TranSum.objects.filter(group=group,code=code,againstType=againstType,part=part).values('scriptSno','sno')
-        except:
-            stu.sno=1
-        print("Stu--->",stu)
-        for data in stu:
-            scriptno=data['scriptSno']
-            sno1=data['sno']
+        # scriptSno=self.request.query_params.get('scriptSno') 
 
-            if scriptno ==0:
-                print("Primary ",scriptno)
+        primary=TranSum.objects.values('scriptSno','sno')
+        print("Primry--->",primary)
+
+        for data in primary:
+            script_no=data['scriptSno']
+            sn=data['sno']
+            # print("script_no",script_no)
+            # print('Sno--->',sn)
+            if script_no==0:
+                print('Primary')
+                pass
             else:
-                ss=sno1+1
-                scriptno=scriptno
-                request.data['sn']=ss
-                request.data['scriptSno']=scriptno
-                print("Serial no-->",request.data.get('sn'))
-                print("Script no-->",request.data.get('scriptSno'))
-        try:
-            sn=TranSum.objects.latest('sno')
-        except:
-            sn=0
-        if sn==0 or  None:
-           print("Prrr")
-        else:
-            sn=sn.sno+1 or 0
-        request.data['sno'] = sn
+                sn=sn+1
+                print("Secondary")
+            request.data['sno'] = sn
+
+
+
+       
+        #     sn=0
+        # if sn==0 or  None:
+        #    print("Prrr")
+        # else:
+        #     sn=sn.sno+1 or 0
+        # request.data['sno'] = sn
         
         
         
