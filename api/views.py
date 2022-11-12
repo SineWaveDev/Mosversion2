@@ -71,22 +71,33 @@ class RetPrimaryAPI(APIView):
         againstType = self.request.query_params.get('againstType')
         dfy = self.request.query_params.get('dfy')
         part = self.request.query_params.get('part') 
+        sp = self.request.query_params.get('sp') 
         # primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).annotate(total_balQty=Sum('balQty')).annotate(holding_val=Sum(F('rate') * F('balQty'))).annotate(average_rate=(F('holding_val')/F('total_balQty')))
 
         primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
+        primary1=TranSum.objects.values('isinCode','fmr').filter(group=group,code=code,againstType=againstType,fy=dfy,part=part)
+
         # print("Primaryyy data---->",primary)
+        isincode1=primary1[0]['isinCode']
+        Fmr=primary1[1]['fmr']
+        hold_val=primary['holding_Val']
+        bal_Qt=primary['total_balQty']
+        avg_rate=round(primary['holding_Val'] / primary['total_balQty'],2)
+        print("Hold va",hold_val)
+        print("avg_rate ",avg_rate)
+        print("bal_Qt ",bal_Qt)
+        primary2=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp=sp)
+        primary2.update(HoldingValue=hold_val,avgRate=avg_rate,balQty=bal_Qt)
 
-        primary_ls={
-            'holdVal':primary['holding_Val'],
-            'balQty':primary['total_balQty'],
-            'avgRate':round(primary['holding_Val'] / primary['total_balQty'],2)
-        }
 
-        request.data['HoldingValue'] =primary_ls 
-        print("requ code",request.data.get("HoldingValue"))
-        
-        
-        return Response({'status':True,'msg':'done','data':primary_ls})
+        # primary_ls={
+        #     'isinCode':isincode1,
+        #     'fmr':Fmr,
+        #     'holdVal':primary['holding_Val'],
+        #     'balQty':primary['total_balQty'],
+        #     'avgRate':round(primary['holding_Val'] / primary['total_balQty'],2)
+        # }
+        # return Response({'status':True,'msg':'done','data':primary_ls})
 
 
 
