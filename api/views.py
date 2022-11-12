@@ -64,6 +64,33 @@ class SavePrimaryAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class RetPrimaryAPI(APIView):
+    def get(self, request, format=None):
+        group = self.request.query_params.get('group')
+        code = self.request.query_params.get('code')
+        againstType = self.request.query_params.get('againstType')
+        dfy = self.request.query_params.get('dfy')
+        part = self.request.query_params.get('part') 
+        # primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).annotate(total_balQty=Sum('balQty')).annotate(holding_val=Sum(F('rate') * F('balQty'))).annotate(average_rate=(F('holding_val')/F('total_balQty')))
+
+        primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
+        # print("Primaryyy data---->",primary)
+
+        primary_ls={
+            'holdVal':primary['holding_Val'],
+            'balQty':primary['total_balQty'],
+            'avgRate':round(primary['holding_Val'] / primary['total_balQty'],2)
+        }
+
+        request.data['HoldingValue'] =primary_ls 
+        print("requ code",request.data.get("HoldingValue"))
+        
+        
+        return Response({'status':True,'msg':'done','data':primary_ls})
+
+
+
+
 
 
 
