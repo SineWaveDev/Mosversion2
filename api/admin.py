@@ -41,6 +41,7 @@ class MemberMasterAdmin(admin.ModelAdmin):
 @admin.register(TranSum)
 class TranSumAdmin(admin.ModelAdmin):
     list_filter = ('group', 'code','fy','againstType','part','sp')
+    list_per_page = 10
     list_display=('trId','group','code','fy','againstType','sp','part','fmr','isinCode','trDate','qty','balQty','rate','sVal','sttCharges','otherCharges','noteAdd','marketRate','marketValue','HoldingValue','avgRate','sno','scriptSno','empCode','clDate','clRate','clQTY','clValue','clsttCharges','clOtherCharges')
 
 

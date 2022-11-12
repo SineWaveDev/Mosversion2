@@ -18,6 +18,22 @@ from .renderers import UserRender
 # <-------------------- SavePurch API ---------------------->
 class SavePurch(APIView):
     def post(self, request, format=None):
+        # try:
+        #     save=TranSum.objects.values('sno','scriptSno').latest('sno')
+        #     print("Primry--->",save)
+        # except:
+        #     save=0
+        
+        # sno1=save.sno
+        # print("Serial no",sno1)
+        # if sno1 ==0 or None:
+        #     s=sno1+1
+        # else:
+        #     s=sno1+1
+        #     # print("ssss",s)
+        # request.data['sno'] = s
+        # print("requ code",request.data.get("sno"))
+
         dic = copy.deepcopy(request.data)
         dic["balQty"] = request.data["qty"]
     
@@ -36,30 +52,38 @@ class SavePrimaryAPI(APIView):
         code = self.request.query_params.get('code')
         againstType = self.request.query_params.get('againstType')
         part = self.request.query_params.get('part') 
-        # scriptSno=self.request.query_params.get('scriptSno') 
+        dfy = self.request.query_params.get('dfy')
+        sp=self.request.query_params.get('sp')
 
-        primary=TranSum.objects.values('scriptSno','sno')
-        print("Primry--->",primary)
+      
+        # primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp=sp).latest('sno')
+    
+        primary=TranSum.objects.latest('sno')
+        # print("Primry--->",primary)
+   
 
-        for data in primary:
-            script_no=data['scriptSno']
-            sn=data['sno']
-            serialno=0  if sn is None or 0 else sn
-            script_no=0  if script_no is None or 0 else script_no
-            # print("script_no",script_no)
-            # print('Sno--->',sn)
-            if script_no==0:
-                print('Primary')
-                pass
-            else:
-                sn=serialno+1
-                print("Secondary")
-            request.data['sno'] = sn
+        # print("PPPPPPPPPPPP",primary)
+        
+        sno1=primary.sno
+        # print("Serial no",sno1)
+        if sno1 ==0 or None:
+            s=sno1+1
+        else:
+            s=sno1+1
+            # print("ssss",s)
+        request.data['sno'] = s
+        print("SSSSSSS",s)
+    
+        
+        scriptno=TranSum.objects.update(scriptSno=s)
+       
+        print("requ code",request.data.get("sno"))
+        
         serializer = SavePurchSerializer1(data=request.data)
         
         if serializer.is_valid():
             serializer.save()
-            print("Primary Records---->",serializer.data)
+            # print("Primary Records---->",serializer.data)
             return Response({'status':True,'msg': 'You have successfully Created','data':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -89,7 +113,6 @@ class RetPrimaryAPI(APIView):
         primary2=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp=sp)
         primary2.update(HoldingValue=hold_val,avgRate=avg_rate,balQty=bal_Qt)
 
-
         # primary_ls={
         #     'isinCode':isincode1,
         #     'fmr':Fmr,
@@ -98,15 +121,6 @@ class RetPrimaryAPI(APIView):
         #     'avgRate':round(primary['holding_Val'] / primary['total_balQty'],2)
         # }
         # return Response({'status':True,'msg':'done','data':primary_ls})
-
-
-
-
-
-
-
-
-
 
 
 # <--------------------RetTransSum API --------------------->
