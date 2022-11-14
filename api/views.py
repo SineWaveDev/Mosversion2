@@ -108,11 +108,11 @@ class RetPrimaryAPI(APIView):
         hold_val=primary['holding_Val']
         bal_Qt=primary['total_balQty']
         # avg_rate=round(primary['holding_Val'] / primary['total_balQty'],2)
-        print("Hold va",hold_val)
+        print("Hold val",hold_val)
         # print("avg_rate ",avg_rate)
         print("bal_Qt ",bal_Qt)
         primary2=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp=sp)
-        primary2.update(HoldingValue=hold_val,balQty=bal_Qt)
+        primary2.update(balQty=bal_Qt)
 
         primary_ls={
             # 'isinCode':isincode1,
