@@ -18,21 +18,24 @@ from .renderers import UserRender
 # <-------------------- SavePurch API ---------------------->
 class SavePurch(APIView):
     def post(self, request, format=None):
-        # try:
-        #     save=TranSum.objects.values('sno','scriptSno').latest('sno')
-        #     print("Primry--->",save)
-        # except:
-        #     save=0
-        
-        # sno1=save.sno
-        # print("Serial no",sno1)
-        # if sno1 ==0 or None:
-        #     s=sno1+1
-        # else:
-        #     s=sno1+1
-        #     # print("ssss",s)
-        # request.data['sno'] = s
-        # print("requ code",request.data.get("sno"))
+        try:
+            save=TranSum.objects.filter(sno=request.data['sno']).latest('scriptSno')
+            print("Primry--->",save)
+        except:
+            save=0
+        try:
+            sno1=save.sno
+        except:
+            sno1=0
+
+        print("Serial no",sno1)
+        if sno1 ==0 or None:
+            s=sno1+1
+        else:
+            s=sno1+1
+            # print("ssss",s)
+        request.data['sno'] = s
+        print("requ code",request.data.get("sno"))
 
         dic = copy.deepcopy(request.data)
         dic["balQty"] = request.data["qty"]
