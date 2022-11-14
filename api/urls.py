@@ -16,7 +16,7 @@ urlpatterns = [
     path('updateCustomer/<int:pk>',views.CustomerUpdadeDelete.as_view()),
     path('customerLogin/',views.CustomerLogin.as_view()),
     path('retChangeDefault/',views.RetChangeDefault.as_view()),
-    # path('retPrimaryAPI/',views.RetPrimaryAPI.as_view())
+    path('retPrimaryAPI/',views.RetPrimaryAPI.as_view())
 
     # path('RetSalesSum/',sales.RetSalesSum.as_view()),   
 ]
