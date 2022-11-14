@@ -5612,3 +5612,194 @@ November 14, 2022 - 00:55:06
 Django version 4.1.2, using settings 'MosV2.settings'
 Starting development server at http://127.0.0.1:6000/
 Quit the server with CONTROL-C.
+Internal Server Error: /retPrimaryAPI/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/ubuntu/mosversion2/Mosversion2/api/views.py", line 109, in get
+    avg_rate=round(primary['holding_Val'] / primary['total_balQty'],2)
+TypeError: unsupported operand type(s) for /: 'NoneType' and 'NoneType'
+[14/Nov/2022 01:01:27] "GET /retPrimaryAPI/ HTTP/1.0" 500 89153
+[14/Nov/2022 01:07:43] "GET /admin/api/transum/?part=TVVISION.NS HTTP/1.0" 200 19012
+[14/Nov/2022 01:07:44] "GET /admin/jsi18n/ HTTP/1.0" 200 3343
+[14/Nov/2022 01:09:52] "GET /admin/api/transum/?part=TVVISION.NS HTTP/1.0" 200 19012
+[14/Nov/2022 01:09:52] "GET /admin/jsi18n/ HTTP/1.0" 200 3343
+[14/Nov/2022 01:14:30] "GET /admin/api/transum/?part=TVVISION.NS HTTP/1.0" 200 19012
+[14/Nov/2022 01:14:31] "GET /admin/jsi18n/ HTTP/1.0" 200 3343
+Internal Server Error: /retPrimaryAPI/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/ubuntu/mosversion2/Mosversion2/api/views.py", line 109, in get
+    avg_rate=round(primary['holding_Val'] / primary['total_balQty'],2)
+TypeError: unsupported operand type(s) for /: 'NoneType' and 'NoneType'
+[14/Nov/2022 01:14:41] "GET /retPrimaryAPI/ HTTP/1.0" 500 89153
+Internal Server Error: /retPrimaryAPI/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/ubuntu/mosversion2/Mosversion2/api/views.py", line 109, in get
+    avg_rate=round(primary['holding_Val'] / primary['total_balQty'],2)
+TypeError: unsupported operand type(s) for /: 'NoneType' and 'NoneType'
+[14/Nov/2022 01:14:42] "GET /retPrimaryAPI/ HTTP/1.0" 500 89153
+Internal Server Error: /retPrimaryAPI/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/ubuntu/mosversion2/Mosversion2/api/views.py", line 109, in get
+    avg_rate=round(primary['holding_Val'] / primary['total_balQty'],2)
+TypeError: unsupported operand type(s) for /: 'NoneType' and 'NoneType'
+[14/Nov/2022 01:14:43] "GET /retPrimaryAPI/ HTTP/1.0" 500 89153
+Internal Server Error: /retPrimaryAPI/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/ubuntu/mosversion2/Mosversion2/api/views.py", line 109, in get
+    avg_rate=round(primary['holding_Val'] / primary['total_balQty'],2)
+TypeError: unsupported operand type(s) for /: 'NoneType' and 'NoneType'
+[14/Nov/2022 01:14:43] "GET /retPrimaryAPI/ HTTP/1.0" 500 89153
+Internal Server Error: /retPrimaryAPI/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/ubuntu/mosversion2/Mosversion2/api/views.py", line 109, in get
+    avg_rate=round(primary['holding_Val'] / primary['total_balQty'],2)
+TypeError: unsupported operand type(s) for /: 'NoneType' and 'NoneType'
+[14/Nov/2022 01:14:44] "GET /retPrimaryAPI/ HTTP/1.0" 500 89153
+Internal Server Error: /retPrimaryAPI/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/ubuntu/mosversion2/Mosversion2/api/views.py", line 109, in get
+    avg_rate=round(primary['holding_Val'] / primary['total_balQty'],2)
+TypeError: unsupported operand type(s) for /: 'NoneType' and 'NoneType'
+[14/Nov/2022 01:14:44] "GET /retPrimaryAPI/ HTTP/1.0" 500 89153
+Internal Server Error: /retPrimaryAPI/
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/home/ubuntu/mosversion2/Mosversion2/api/views.py", line 109, in get
+    avg_rate=round(primary['holding_Val'] / primary['total_balQty'],2)
+TypeError: unsupported operand type(s) for /: 'NoneType' and 'NoneType'
+[14/Nov/2022 01:14:45] "GET /retPrimaryAPI/ HTTP/1.0" 500 89153
+/home/ubuntu/mosversion2/Mosversion2/api/views.py changed, reloading.
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+November 14, 2022 - 01:18:22
+Django version 4.1.2, using settings 'MosV2.settings'
+Starting development server at http://127.0.0.1:6000/
+Quit the server with CONTROL-C.
