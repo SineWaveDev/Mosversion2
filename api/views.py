@@ -39,7 +39,7 @@ class SavePurch(APIView):
 
     def post(self, request, format=None):
         try:
-            save=TranSum.objects.filter(Q(sp='O')|Q(sp='A')).latest('sno')
+            save=TranSum.objects.filter(Q(sp='O')|Q(sp='A'),part=request.data['part']).latest('sno')
             print("Primry--->",save)
         except:
             save=0
