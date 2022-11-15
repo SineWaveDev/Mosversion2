@@ -24,7 +24,6 @@ class SavePurch(APIView):
         dfy = self.request.query_params.get('dfy')
         part = self.request.query_params.get('part')
 
-    
         primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
         print("Mastr Primary--->",primary)
         bal_qty=primary['total_balQty']
@@ -33,39 +32,12 @@ class SavePurch(APIView):
         print('Avg Rate---->',avg_rate)
         print("Holding val--->",hold_val)
         print("BalQty--->",bal_qty)
-        update_bal_qty=TranSum.objects.filter(sp='M').update(balQty=bal_qty,HoldingValue=hold_val,avgRate=avg_rate)
-        # primary1=TranSum.objects.values('isinCode','fmr').filter(group=group,code=code,againstType=againstType,fy=dfy,part=part)
-        # bal_qty=0 if primary['total_balQty'] is None else primary['total_balQty']
-        # hold_val1=0 if primary['holding_Val'] is None  else primary['holding_Val'] 
-
-        # hold_val=hold_val1
-        # bal_Qt=bal_qty
-        # avg_rate=round(hold_val/bal_Qt)
-        # print("Hold val",hold_val)
-        # print("avg_rate ",avg_rate)
-        # print("bal_Qt ",bal_Qt)
-        # primary2=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part)
-        # primary2.update(balQty=bal_Qt,HoldingValue=hold_val,avgRate=avg_rate)
-
-        # primary_ls={
-        
-        #     # 'avg_rate':avg_rate,
-        #     'holdVal':primary['holding_Val'],
-        #     'balQty':primary['total_balQty'],
-        #     # 'avgRate':round(primary['holding_Val'] / primary['total_balQty'],2)
-        # }
+        update_bal_qty=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp='M').update(balQty=bal_qty,HoldingValue=hold_val,avgRate=avg_rate)
+    
         return Response({'status':True,'msg':'done'})
 
 
-
-
     def post(self, request, format=None):
-        group = self.request.query_params.get('group')
-        code = self.request.query_params.get('code')
-        againstType = self.request.query_params.get('againstType')
-        dfy = self.request.query_params.get('dfy')
-        part = self.request.query_params.get('part')
-
         try:
             save=TranSum.objects.filter(Q(sp='O')|Q(sp='A')).latest('sno')
             print("Primry--->",save)
@@ -110,51 +82,12 @@ class SavePurch(APIView):
 
 
 class SavePrimaryAPI(APIView):
-    def get(self, request, format=None):
-        group = self.request.query_params.get('group')
-        code = self.request.query_params.get('code')
-        againstType = self.request.query_params.get('againstType')
-        dfy = self.request.query_params.get('dfy')
-        part = self.request.query_params.get('part')
-
-    
-        # primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
-        # primary1=TranSum.objects.values('isinCode','fmr').filter(group=group,code=code,againstType=againstType,fy=dfy,part=part)
-        # bal_qty=0 if primary['total_balQty'] is None else primary['total_balQty']
-        # hold_val1=0 if primary['holding_Val'] is None  else primary['holding_Val'] 
-
-        # hold_val=hold_val1
-        # bal_Qt=bal_qty
-        # avg_rate=round(hold_val/bal_Qt)
-        # print("Hold val",hold_val)
-        # print("avg_rate ",avg_rate)
-        # print("bal_Qt ",bal_Qt)
-        # primary2=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part)
-        # primary2.update(balQty=bal_Qt,HoldingValue=hold_val,avgRate=avg_rate)
-
-        # primary_ls={
-        
-        #     # 'avg_rate':avg_rate,
-        #     'holdVal':primary['holding_Val'],
-        #     'balQty':primary['total_balQty'],
-        #     # 'avgRate':round(primary['holding_Val'] / primary['total_balQty'],2)
-        # }
-        return Response({'status':True,'msg':'done'})
-
-
-
     def post(self, request,format=None): 
-        group = self.request.query_params.get('group')
-        code = self.request.query_params.get('code')
-        againstType = self.request.query_params.get('againstType')
-        dfy = self.request.query_params.get('dfy')
-        part = self.request.query_params.get('part') 
-
         try:
             primary=TranSum.objects.filter(sp='M').latest('sno')
         except:
             primary=0
-        print("Primary RR",primary)
+        # print("Primary RR",primary)
         
         try:
             sno1=primary.sno
@@ -162,66 +95,22 @@ class SavePrimaryAPI(APIView):
             sno1=0
         if sno1 == 0:
             s=sno1+1
-            print('yes',s)
+            # print('yes',s)
         else:
             s=sno1+1
-            print("no",s)
+            # print("no",s)
 
         request.data['sno']=s
-        # scriptno=TranSum.objects.update(scriptSno=s)
-        # print("requ code",request.data.get("sno"))
+
+        if TranSum.objects.filter(scriptSno=0).exists():
+            pass
         
-    
-        # primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp=sp).latest('sno')
-        # primary1=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp=sp).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
-        # primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp="M")
-        # print("Primry--->",primary)
-        
-        # scriptno=TranSum.objects.update(scriptSno=s)
-        # print("requ code",request.data.get("sno"))
         serializer = SavePurchSerializer1(data=request.data)
         if serializer.is_valid():
             serializer.save()
             # print("Primary Records---->",serializer.data)
             return Response({'status':True,'msg': 'You have successfully Created','data':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class RetPrimaryAPI(APIView):
-    def get(self, request, format=None):
-        group = self.request.query_params.get('group')
-        code = self.request.query_params.get('code')
-        againstType = self.request.query_params.get('againstType')
-        dfy = self.request.query_params.get('dfy')
-        part = self.request.query_params.get('part') 
-        # sp = self.request.query_params.get('sp')
-        # primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).annotate(total_balQty=Sum('balQty')).annotate(holding_val=Sum(F('rate') * F('balQty'))).annotate(average_rate=(F('holding_val')/F('total_balQty')))
-
-        primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
-        primary1=TranSum.objects.values('isinCode','fmr').filter(group=group,code=code,againstType=againstType,fy=dfy,part=part)
-
-        bal_qty=0 if primary['total_balQty'] is None else primary['total_balQty']
-        hold_val1=0 if primary['holding_Val'] is None  else primary['holding_Val'] 
-
-        hold_val=hold_val1
-        bal_Qt=bal_qty
-        avg_rate=round(hold_val/bal_Qt)
-        print("Hold val",hold_val)
-        print("avg_rate ",avg_rate)
-        print("bal_Qt ",bal_Qt)
-        primary2=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part)
-        # primary2.patch(balQty=bal_Qt)
-
-        primary_ls={
-            'isinCode':primary1[0]['isinCode'],
-            'fmr':primary1[0]['fmr'],
-            
-            'avg_rate':avg_rate,
-            'holdVal':primary['holding_Val'],
-            'balQty':primary['total_balQty'],
-            # 'avgRate':round(primary['holding_Val'] / primary['total_balQty'],2)
-        }
-        return Response({'status':True,'msg':'done','data':primary_ls})
 
 
 # <--------------------RetTransSum API --------------------->
