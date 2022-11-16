@@ -17,27 +17,28 @@ from .renderers import UserRender
 
 # <-------------------- SavePurch API ---------------------->
 class SavePurch(APIView):
-    def get(self, request, format=None):
-        group = self.request.query_params.get('group')
-        code = self.request.query_params.get('code')
-        againstType = self.request.query_params.get('againstType')
-        dfy = self.request.query_params.get('dfy')
-        part = self.request.query_params.get('part')
-        primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
-        print("Mastr Primary--->",primary)
-        bal_qty=primary['total_balQty']
-        hold_val=primary['holding_Val']
-        avg_rate=hold_val / bal_qty
-        # print('Avg Rate---->',avg_rate)
-        # print("Holding val--->",hold_val)
-        # print("BalQty--->",bal_qty)
-        dt={'balQt':bal_qty,'holdVal':hold_val,'avgRate':avg_rate}
-        print("Dictionary----->",dt)
-        update_bal_qty=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp='M').update(balQty=bal_qty,HoldingValue=hold_val,avgRate=avg_rate)
-        # obj_instance = TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp='M')
-        # obj_instance.balQty = bal_qty
-        # obj_instance.bulk_update
-        return Response({'status':True,'msg':'done'})
+    # def get(self, request, format=None):
+    #     group = self.request.query_params.get('group')
+    #     code = self.request.query_params.get('code')
+    #     againstType = self.request.query_params.get('againstType')
+    #     dfy = self.request.query_params.get('dfy')
+    #     part = self.request.query_params.get('part')
+    #     primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
+    #     print("Mastr Primary--->",primary)
+    #     bal_qty=primary['total_balQty']
+    #     hold_val=primary['holding_Val']
+    #     avg_rate=hold_val / bal_qty
+    #     # print('Avg Rate---->',avg_rate)
+    #     # print("Holding val--->",hold_val)
+    #     # print("BalQty--->",bal_qty)
+    #     dt={'balQt':bal_qty,'holdVal':hold_val,'avgRate':avg_rate}
+    #     print("Dictionary----->",dt)
+    #     update_bal_qty=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp='M').update(balQty=bal_qty)
+       
+
+
+
+    #     return Response({'status':True,'msg':'done'})
 
 
     def post(self, request, format=None):
@@ -72,12 +73,21 @@ class SavePurch(APIView):
         request.data['sno'] = s
         request.data['scriptSno'] = sn
 
+        
+
         dic = copy.deepcopy(request.data)
         dic["balQty"] = request.data["qty"]
     
         serializer = SavePurchSerializer(data=dic)
         if serializer.is_valid():
             serializer.save()
+            primary=TranSum.objects.filter(group=request.data['group'],code=request.data['code'],part=request.data['part'],againstType=request.data['againstType'],fy=request.data['fy']).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
+            # print("Mastr Primary2222222222222222222--->",primary)
+            bal_qty=primary['total_balQty']
+            hold_val=primary['holding_Val']
+            avg_rate=hold_val / bal_qty
+            update_bal_qty=TranSum.objects.filter(group=request.data['group'],code=request.data['code'],part=request.data['part'],againstType=request.data['againstType'],fy=request.data['fy'],sp='M').update(balQty=bal_qty,HoldingValue=hold_val,avgRate=avg_rate)
+          
             # print("Saving Records---->",serializer.data)
           
             return Response({'status':True,'msg': 'You have successfully Created','data':serializer.data}, status=status.HTTP_201_CREATED)
