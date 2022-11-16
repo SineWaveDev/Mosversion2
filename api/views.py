@@ -23,17 +23,20 @@ class SavePurch(APIView):
         againstType = self.request.query_params.get('againstType')
         dfy = self.request.query_params.get('dfy')
         part = self.request.query_params.get('part')
-
         primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
         print("Mastr Primary--->",primary)
         bal_qty=primary['total_balQty']
         hold_val=primary['holding_Val']
         avg_rate=hold_val / bal_qty
-        print('Avg Rate---->',avg_rate)
-        print("Holding val--->",hold_val)
-        print("BalQty--->",bal_qty)
+        # print('Avg Rate---->',avg_rate)
+        # print("Holding val--->",hold_val)
+        # print("BalQty--->",bal_qty)
+        dt={'balQt':bal_qty,'holdVal':hold_val,'avgRate':avg_rate}
+        print("Dictionary----->",dt)
         update_bal_qty=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp='M').update(balQty=bal_qty,HoldingValue=hold_val,avgRate=avg_rate)
-    
+        # obj_instance = TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp='M')
+        # obj_instance.balQty = bal_qty
+        # obj_instance.bulk_update
         return Response({'status':True,'msg':'done'})
 
 
@@ -102,11 +105,15 @@ class SavePrimaryAPI(APIView):
 
         request.data['sno']=s
 
-        if TranSum.objects.filter(scriptSno=0).exists():
-            pass
+        # if TranSum.objects.filter(scriptSno=0).exists():
+        #     pass
         
         serializer = SavePurchSerializer1(data=request.data)
         if serializer.is_valid():
+            primary=TranSum.objects.filter(part=request.data['part'] , sp='M')
+            # print("Primaryyy--->",primary)
+            if primary:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             serializer.save()
             # print("Primary Records---->",serializer.data)
             return Response({'status':True,'msg': 'You have successfully Created','data':serializer.data}, status=status.HTTP_201_CREATED)
@@ -119,10 +126,9 @@ class RetTransSum(generics.ListAPIView):
     serializer_class=RetTransSumSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['group','code','againstType','part']
-
     # <-------------------- Overriding Queryset --------------->
     def get_queryset(self):
-        option = self.request.query_params.get('option')
+        option = self.request.query_params.get('option') 
         dfy = self.request.query_params.get('dfy')
         try:
             start_fy = f"{dfy[:4]}-04-01"
@@ -192,7 +198,7 @@ class RetScriptSum(APIView):
         addition_su = 0 if addition['addition_sum'] is None else addition['addition_sum']
         opening_val = 0 if opening['opening_values'] is None else opening['opening_values']
         addition_val = 0 if addition['addition_values'] is None else addition['addition_values']
-       
+        
         context={
             "opening":opening_su,
             "addition":addition_su,

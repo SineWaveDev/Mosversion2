@@ -10,16 +10,14 @@ class SavePurchSerializer(serializers.ModelSerializer):
         model=TranSum
         fields=('trId','group','code','fy','againstType','sp','sno','scriptSno','part','fmr','isinCode','trDate','qty','rate','sVal','sttCharges','otherCharges','noteAdd','balQty','marketRate')
 
+
+# <----------------- Master Saving API ----------------->
 class SavePurchSerializer1(serializers.ModelSerializer):
     class Meta:
         model=TranSum
         fields=('trId','group','code','fy','againstType','sp','sno','scriptSno','part','fmr','isinCode','marketRate','HoldingValue','marketValue','avgRate','dayTrade','strategyDate','strategyTrigger')
 
    
-
-
-
-
 
 # <---------------Retriveing API ------------------>
 class RetTransSumSerializer(serializers.ModelSerializer):
@@ -58,7 +56,7 @@ class RetChangeDefaultSerializer(serializers.ModelSerializer):
         model=MemberMaster
         fields=['code','name']
 
-
+#<----------------- Saving Customer API Serializer ----------------->
 class SavecustomerSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={"input_type": "password"}, write_only=True,required=False)
     class Meta:
