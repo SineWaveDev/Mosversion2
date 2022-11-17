@@ -334,9 +334,8 @@ class RetMasterReport(APIView):
         #     }
         #     master_ls.append(master_total)
         master_total={'hold_val_total':Master_Report_Total['hold_val_total'],'bal_qty_total':Master_Report_Total['bal_qty_total']}
-        # print("Master Recordssss",master_total)
+        print("Master Recordssss",master_total)
             
-           
         serializer=RetHoldingReportSerializer(Master_Records,many=True)
         return Response({'status':True,'msg':'done','data':serializer.data,'result':master_total})
 
