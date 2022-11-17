@@ -17,4 +17,5 @@ urlpatterns = [
     path('customerLogin/',views.CustomerLogin.as_view()),
     path('retChangeDefault/',views.RetChangeDefault.as_view()),  
     path('retMasterReport/',views.RetMasterReport.as_view()),
+    path('ExportImportExcel/',views.ExportImportExcel.as_view())
 ]
