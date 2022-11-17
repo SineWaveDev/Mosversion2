@@ -12,7 +12,7 @@ class SavePurchSerializer(serializers.ModelSerializer):
 
 
 # <----------------- Master Saving API ----------------->
-class SavePurchSerializer1(serializers.ModelSerializer):
+class SaveMasterSerializer(serializers.ModelSerializer):
     class Meta:
         model=TranSum
         fields=('trId','group','code','fy','againstType','sp','sno','scriptSno','part','fmr','isinCode','marketRate','HoldingValue','marketValue','avgRate','dayTrade','strategyDate','strategyTrigger')
@@ -114,6 +114,13 @@ class RetSalesDetSerializer(serializers.ModelSerializer):
     class Meta:
         model=MOS_Sales
         fields=['trId','sDate','sqty','srate','sVal','stt','other']
+
+
+# ----------------- Master Report Serializer ----------------------->
+class RetHoldingReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=TranSum
+        fields=['part','balQty','HoldingValue']
 
 
 

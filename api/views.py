@@ -10,41 +10,17 @@ from django.http import Http404
 from rest_framework.views import APIView
 from .serializers import (SavePurchSerializer,RetTransSumSerializer,
 SaveMemberSerializer,RetMemberSerializer,SavecustomerSerializer,
-RetChangeDefaultSerializer,CustomerLoginSerializer,TranSumRetrivesc2Serializer,SavePurchSerializer1)
+RetChangeDefaultSerializer,CustomerLoginSerializer,TranSumRetrivesc2Serializer,SaveMasterSerializer,RetHoldingReportSerializer)
 import copy
 from django.contrib.auth import authenticate
 from .renderers import UserRender
 
 # <-------------------- SavePurch API ---------------------->
 class SavePurch(APIView):
-    # def get(self, request, format=None):
-    #     group = self.request.query_params.get('group')
-    #     code = self.request.query_params.get('code')
-    #     againstType = self.request.query_params.get('againstType')
-    #     dfy = self.request.query_params.get('dfy')
-    #     part = self.request.query_params.get('part')
-    #     primary=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
-    #     print("Mastr Primary--->",primary)
-    #     bal_qty=primary['total_balQty']
-    #     hold_val=primary['holding_Val']
-    #     avg_rate=hold_val / bal_qty
-    #     # print('Avg Rate---->',avg_rate)
-    #     # print("Holding val--->",hold_val)
-    #     # print("BalQty--->",bal_qty)
-    #     dt={'balQt':bal_qty,'holdVal':hold_val,'avgRate':avg_rate}
-    #     print("Dictionary----->",dt)
-    #     update_bal_qty=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,part=part,sp='M').update(balQty=bal_qty)
-       
-
-
-
-    #     return Response({'status':True,'msg':'done'})
-
-
     def post(self, request, format=None):
         try:
             save=TranSum.objects.filter(Q(sp='O')|Q(sp='A'),part=request.data['part']).latest('sno')
-            print("Primry--->",save)
+            # print("Primry--->",save)
         except:
             save=0
         # print("Primry--->",save)
@@ -59,7 +35,7 @@ class SavePurch(APIView):
             s=sno1+1
         try:
             latsno=TranSum.objects.filter(sp='M').latest('sno')
-            print('Save 1--->',latsno)
+            # print('Save 1--->',latsno)
         except:
             latsno=0
         try:
@@ -73,8 +49,6 @@ class SavePurch(APIView):
         request.data['sno'] = s
         request.data['scriptSno'] = sn
 
-        
-
         dic = copy.deepcopy(request.data)
         dic["balQty"] = request.data["qty"]
     
@@ -82,7 +56,7 @@ class SavePurch(APIView):
         if serializer.is_valid():
             serializer.save()
             primary=TranSum.objects.filter(group=request.data['group'],code=request.data['code'],part=request.data['part'],againstType=request.data['againstType'],fy=request.data['fy']).aggregate(total_balQty=Sum('balQty'),holding_Val=Sum(F('rate') * F('balQty')))
-            # print("Mastr Primary2222222222222222222--->",primary)
+            print("Mastr Primary2222222222222222222--->",primary)
             bal_qty=primary['total_balQty']
             hold_val=primary['holding_Val']
             avg_rate=hold_val / bal_qty
@@ -118,7 +92,7 @@ class SavePrimaryAPI(APIView):
         # if TranSum.objects.filter(scriptSno=0).exists():
         #     pass
         
-        serializer = SavePurchSerializer1(data=request.data)
+        serializer = SaveMasterSerializer(data=request.data)
         if serializer.is_valid():
             primary=TranSum.objects.filter(part=request.data['part'] , sp='M')
             # print("Primaryyy--->",primary)
@@ -337,6 +311,34 @@ class RetChangeDefault(APIView):
         serializer=RetChangeDefaultSerializer(member,many=True)
         return Response({'status':True,'msg':'done','data':serializer.data})
 
+# <------------------ Master Holding Report ----------->
+
+class RetMasterReport(APIView):
+    def get(self, request, format=None):
+        group = self.request.query_params.get('group')
+        code = self.request.query_params.get('code')
+        againstType = self.request.query_params.get('againstType')
+        Master_Records=TranSum.objects.filter(group=group,code=code,againstType=againstType,sp='M').values('part','balQty','HoldingValue')
+        Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
+        # print('Master Total --->',Master_Report_Total)
+        # print("All Master Records---->",Master_Records)
+        # master_ls=[]
+        # for master in Master_Records:
+        #     master_total={
+        #         'part':master['part'],
+        #         'balQty':master['balQty'],
+        #         'HoldingValue':master['HoldingValue'],
+        #         'hold_val_total':Master_Report_Total['hold_val_total'],
+        #         'bal_qty_total':Master_Report_Total['bal_qty_total']
+
+        #     }
+        #     master_ls.append(master_total)
+        master_total={'hold_val_total':Master_Report_Total['hold_val_total'],'bal_qty_total':Master_Report_Total['bal_qty_total']}
+        # print("Master Recordssss",master_total)
+            
+           
+        serializer=RetHoldingReportSerializer(Master_Records,many=True)
+        return Response({'status':True,'msg':'done','data':serializer.data,'result':master_total})
 
 
     
