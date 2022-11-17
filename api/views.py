@@ -14,6 +14,11 @@ RetChangeDefaultSerializer,CustomerLoginSerializer,TranSumRetrivesc2Serializer,S
 import copy
 from django.contrib.auth import authenticate
 from .renderers import UserRender
+import pandas as pd
+from django.conf import settings
+import uuid
+import numpy as np
+
 
 # <-------------------- SavePurch API ---------------------->
 class SavePurch(APIView):
@@ -320,24 +325,48 @@ class RetMasterReport(APIView):
         againstType = self.request.query_params.get('againstType')
         Master_Records=TranSum.objects.filter(group=group,code=code,againstType=againstType,sp='M').values('part','balQty','HoldingValue')
         Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
-        # print('Master Total --->',Master_Report_Total)
-        # print("All Master Records---->",Master_Records)
         master_ls=[]
         for master in Master_Records:
             master_total={
-                'part':master['part'],
-                'balQty':master['balQty'],
+                'Script':master['part'],
+                'Qty':master['balQty'],
                 'holding %':'',
                 'holding(Rs)':master['HoldingValue'],
                 
             }
             master_ls.append(master_total)
         master_total={'hold_val_total':Master_Report_Total['hold_val_total'],'bal_qty_total':Master_Report_Total['bal_qty_total']}
-        print("Master Recordssss",master_total)
+        # print("Master Recordssss",master_total)
+        serializer=RetHoldingReportSerializer(master_ls,many=True)
+        df=pd.DataFrame(master_ls)
+        df.at['Total', 'Qty'] = df['Qty'].sum()
+        df.at['Total', 'holding(Rs)'] = df['holding(Rs)'].sum()
+
+        # df.insert(0, 'S.N', range(1, 1 + len(df)))
+        df = df.reset_index()
+        df = df.rename(columns={"index":"S.N"})
+        df['S.N'] = df.index + 1
             
+       
+        print(df)
+        df.to_csv(f"MosV2/excel/{uuid.uuid4()}.csv",encoding='UTF-8',index=False)
+        return Response({'status':200})
+        # return Response({'status':True,'msg':'done','data':master_ls})
+
+class ExportImportExcel(APIView):
+    def get(self,request):
+        group = self.request.query_params.get('group')
+        code = self.request.query_params.get('code')
+        againstType = self.request.query_params.get('againstType')
+        Master_Records=TranSum.objects.filter(group=group,code=code,againstType=againstType,sp='M').values('part','balQty','HoldingValue')
         serializer=RetHoldingReportSerializer(Master_Records,many=True)
-        return Response({'status':True,'msg':'done','data':master_ls,'result':master_total})
+        
 
-
+        df=pd.DataFrame(serializer.data)
+        df.columns = [ 'Part', 'balQty', 'HoldingValue']
+        print(df)
+        df.to_csv(f"MosV2/excel/{uuid.uuid4()}.csv",encoding='UTF-8')
+        
+        return Response({'status':200})
     
   
