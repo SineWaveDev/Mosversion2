@@ -322,22 +322,21 @@ class RetMasterReport(APIView):
         Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
         # print('Master Total --->',Master_Report_Total)
         # print("All Master Records---->",Master_Records)
-        # master_ls=[]
-        # for master in Master_Records:
-        #     master_total={
-        #         'part':master['part'],
-        #         'balQty':master['balQty'],
-        #         'HoldingValue':master['HoldingValue'],
-        #         'hold_val_total':Master_Report_Total['hold_val_total'],
-        #         'bal_qty_total':Master_Report_Total['bal_qty_total']
-
-        #     }
-        #     master_ls.append(master_total)
+        master_ls=[]
+        for master in Master_Records:
+            master_total={
+                'part':master['part'],
+                'balQty':master['balQty'],
+                'holding %':'',
+                'holding(Rs)':master['HoldingValue'],
+                
+            }
+            master_ls.append(master_total)
         master_total={'hold_val_total':Master_Report_Total['hold_val_total'],'bal_qty_total':Master_Report_Total['bal_qty_total']}
         print("Master Recordssss",master_total)
             
         serializer=RetHoldingReportSerializer(Master_Records,many=True)
-        return Response({'status':True,'msg':'done','data':serializer.data,'result':master_total})
+        return Response({'status':True,'msg':'done','data':master_ls,'result':master_total})
 
 
     
