@@ -337,13 +337,9 @@ class HoldingReportExport(APIView):
         today = datetime.today().strftime("%d/%m/%Y")
         print("today-->",today)
 
-        # date_time = datetime.datetime.now()
-       
-        # date_time.strftime("%d/%m/%Y")
-        # print(date_time)
-       
 
         report=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').values('part','balQty','HoldingValue').order_by('part')
+        print("Report---->",report)
         Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
         # print("Masssssss",Master_Report_Total)
 
@@ -355,6 +351,24 @@ class HoldingReportExport(APIView):
 
         total_qty=Master_Report_Total['bal_qty_total']
         # print("Total Qty",total_qty)
+       
+        ls=[]
+        for data in report:
+            holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
+            data['balQty']=int(data['balQty'])
+            # print("DDDD",data['balQty'])
+            data['holding_Per']=holding_Per
+            data['balQty']=data['balQty']
+            # print("Holdin g%-->",holding_Per)
+            # holding_percentage={'holding%':round(data['HoldingValue']/total_holdRs*100,2)}
+            
+            # ls.append(holding_percentage)
+            # print('ls',ls)
+            
+           
+            # print(data['HoldingValue']/total_holdRs*100)
+       
+       
 
 
 
@@ -377,9 +391,11 @@ class HoldingReportExport(APIView):
             'total_qty':total_qty,
             'againstType':againstType,
             'dfy':dfy,
-            'today':today,
+            'today':today
+            # 'holding_Per':holding_Per
 
         }
+       
 
         html = render_to_string(template_path,context )
         # print (html)

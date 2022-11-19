@@ -39,7 +39,7 @@
 <body>
    <h1>{% for m in member %}{{m.name}}{% endfor %}(FY {{dfy}} )</h1>
    <h2>Holding Report ({{againstType}})</h2>
-  
+ 
 <table id="customers">
 
   <tr>
@@ -51,20 +51,27 @@
     <th scope="col" style="text-align:right;">Holding(Rs)</th>
     
   </tr>
+
+ 
   {% for master in report  %}
+  
   <tr>
         <td>{{forloop.counter}}</td>
         <td style="text-align:left;">{{master.part}}</td>
+      
         <td style="text-align:right;">{{master.balQty}}</td>
-        <td style="text-align:right;">-</td>
+
+        <td style="text-align:right;">{{master.holding_Per}}</td>
+  
         <td style="text-align:right;">{{master.HoldingValue}}</td>   
   </tr>
   {% endfor %}
+
   <tr style='background-color:#808080'>
     <td style="text-align:right;">--</td>
     <td style="text-align:right;">Total</td>
     <td style="text-align:right;">{{total_qty}}</td>
-    <td style="text-align:right;">--</td>
+    <td style="text-align:right;">100%</td>
     <td style="text-align:right;">{{total_holdRs}}</td>
   </tr>
 
