@@ -15,9 +15,15 @@ import copy
 from django.contrib.auth import authenticate
 from .renderers import UserRender
 import pandas as pd
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa
+from django.template.loader import get_template
 from django.conf import settings
-import uuid
-import numpy as np
+from django.http import HttpResponse
+from datetime import  datetime
+
+from rest_framework.pagination import PageNumberPagination
+
 
 
 # <-------------------- SavePurch API ---------------------->
@@ -316,57 +322,70 @@ class RetChangeDefault(APIView):
         serializer=RetChangeDefaultSerializer(member,many=True)
         return Response({'status':True,'msg':'done','data':serializer.data})
 
-# <------------------ Master Holding Report ----------->
 
-class RetMasterReport(APIView):
-    def get(self, request, format=None):
-        group = self.request.query_params.get('group')
-        code = self.request.query_params.get('code')
-        againstType = self.request.query_params.get('againstType')
-        Master_Records=TranSum.objects.filter(group=group,code=code,againstType=againstType,sp='M').values('part','balQty','HoldingValue')
-        Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
-        master_ls=[]
-        for master in Master_Records:
-            master_total={
-                'Script':master['part'],
-                'Qty':master['balQty'],
-                'holding %':'',
-                'holding(Rs)':master['HoldingValue'],
-                
-            }
-            master_ls.append(master_total)
-        master_total={'hold_val_total':Master_Report_Total['hold_val_total'],'bal_qty_total':Master_Report_Total['bal_qty_total']}
-        # print("Master Recordssss",master_total)
-        serializer=RetHoldingReportSerializer(master_ls,many=True)
-        df=pd.DataFrame(master_ls)
-        df.at['Total', 'Qty'] = df['Qty'].sum()
-        df.at['Total', 'holding(Rs)'] = df['holding(Rs)'].sum()
 
-        # df.insert(0, 'S.N', range(1, 1 + len(df)))
-        df = df.reset_index()
-        df = df.rename(columns={"index":"S.N"})
-        df['S.N'] = df.index + 1
-            
-       
-        print(df)
-        df.to_csv(f"MosV2/excel/{uuid.uuid4()}.csv",encoding='UTF-8',index=False)
-        return Response({'status':200})
-        # return Response({'status':True,'msg':'done','data':master_ls})
-
-class ExportImportExcel(APIView):
+class HoldingReportExport(APIView):
     def get(self,request):
         group = self.request.query_params.get('group')
         code = self.request.query_params.get('code')
         againstType = self.request.query_params.get('againstType')
-        Master_Records=TranSum.objects.filter(group=group,code=code,againstType=againstType,sp='M').values('part','balQty','HoldingValue')
-        serializer=RetHoldingReportSerializer(Master_Records,many=True)
-        
+        dfy = self.request.query_params.get('dfy')
 
-        df=pd.DataFrame(serializer.data)
-        df.columns = [ 'Part', 'balQty', 'HoldingValue']
-        print(df)
-        df.to_csv(f"MosV2/excel/{uuid.uuid4()}.csv",encoding='UTF-8')
-        
-        return Response({'status':200})
-    
+        # print('againstType----->',againstType)
+        # print("dfy ======>",dfy)
+
+        today = datetime.today().strftime("%d/%m/%Y")
+        print("today-->",today)
+
+        # date_time = datetime.datetime.now()
+       
+        # date_time.strftime("%d/%m/%Y")
+        # print(date_time)
+       
+
+        report=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').values('part','balQty','HoldingValue').order_by('part')
+        Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
+        # print("Masssssss",Master_Report_Total)
+
+        total_holdRs=Master_Report_Total['hold_val_total']
+        total_holdRs=0 if total_holdRs is None else total_holdRs
+
+        total_holdRs=round(total_holdRs,2)
+        # print("Hold Rs--->",total_holdRs)
+
+        total_qty=Master_Report_Total['bal_qty_total']
+        # print("Total Qty",total_qty)
+
+
+
+        # re=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy).values('againstType','fy')
+        # type=re[0]['againstType']
+        # fy=re[0]['fy']
+        # print("Master     Records--->",type,fy)
+
+        member=MemberMaster.objects.filter(group=group,code=code).values('name')
+        # print(':Member-------->',member)
+       
+        template_path = 'report.html'
+
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="Report.pdf"'
+        context={
+            'report': report,
+            'member':member,
+            'total_holdRs':total_holdRs,
+            'total_qty':total_qty,
+            'againstType':againstType,
+            'dfy':dfy,
+            'today':today,
+
+        }
+
+        html = render_to_string(template_path,context )
+        # print (html)
+
+        pisaStatus = pisa.CreatePDF(html, dest=response)
+       
+        return response
+       
   
