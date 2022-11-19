@@ -200,7 +200,7 @@ class RetScriptSum(APIView):
             "sales":0,
             "closing":opening_su+addition_su,
             "invVal":opening_val+addition_val,
-            "avgRate":round((opening_val+addition_val)/(opening_su+addition_su),2),
+            # "avgRate":round((opening_val+addition_val)/(opening_su+addition_su),2),
         }
         open_add=TranSum.objects.filter(group=group,code=code,part=part)
         serializer=TranSumRetrivesc2Serializer(open_add)
@@ -346,6 +346,7 @@ class HoldingReportExport(APIView):
         # print("Hold Rs--->",total_holdRs)
 
         total_qty=Master_Report_Total['bal_qty_total']
+        total_qty=0 if total_qty is None else total_qty
         total_qty=int(total_qty)
         # print("Total Qty",total_qty)
        
