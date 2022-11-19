@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holding Report</title>
+
+    <style>
+        #customers {
+          width: 100%;
+          font-family: "Trebuchet MS", Tahoma, sans-serif;
+          font-weight: bold;
+
+        }
+       
+        #customers td, #customers th {
+          border: 2px solid black;
+          padding: 2px;
+         
+        }
+        
+        #customers th {
+          text-align:left;
+          background-color:#808080;
+         
+        } 
+        td{
+          text-align: center;
+        }
+        h1,h2{
+          text-align:center ;
+        }
+       
+
+        </style>
+</head>
+<body>
+   <h1>{% for m in member %}{{m.name}}{% endfor %}(FY {{dfy}} )</h1>
+   <h2>Holding Report ({{againstType}})</h2>
+  
+<table id="customers">
+
+  <tr>
+    <p style="color:black;font-size:13px;padding-bottom:0px;"> <b> Run Date :{{today}}</b></p>
+    <th scope="col" style="text-align:center;">S.N</th>
+    <th scope="col" style="text-align:left;">Script</th>
+    <th scope="col" style="text-align:right;">Qty</th>
+    <th scope="col" style="text-align:right;">Holding %</th>
+    <th scope="col" style="text-align:right;">Holding(Rs)</th>
+    
+  </tr>
+  {% for master in report  %}
+  <tr>
+        <td>{{forloop.counter}}</td>
+        <td style="text-align:left;">{{master.part}}</td>
+        <td style="text-align:right;">{{master.balQty}}</td>
+        <td style="text-align:right;">-</td>
+        <td style="text-align:right;">{{master.HoldingValue}}</td>   
+  </tr>
+  {% endfor %}
+  <tr style='background-color:#808080'>
+    <td style="text-align:right;">--</td>
+    <td style="text-align:right;">Total</td>
+    <td style="text-align:right;">{{total_qty}}</td>
+    <td style="text-align:right;">--</td>
+    <td style="text-align:right;">{{total_holdRs}}</td>
+  </tr>
+
+</table>
+
+</body>
+</html>
