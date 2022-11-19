@@ -43,7 +43,8 @@ class SavePurch(APIView):
         if sno1 ==0 or None:
             s=sno1+1
         else:
-            s=sno1+1
+            s=0 if sno1 is None else sno1+1
+            # s=sno1+1
         try:
             latsno=TranSum.objects.filter(sp='M').latest('sno')
             # print('Save 1--->',latsno)
