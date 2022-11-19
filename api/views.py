@@ -331,12 +331,8 @@ class HoldingReportExport(APIView):
         againstType = self.request.query_params.get('againstType')
         dfy = self.request.query_params.get('dfy')
 
-        # print('againstType----->',againstType)
-        # print("dfy ======>",dfy)
-
         today = datetime.today().strftime("%d/%m/%Y")
         print("today-->",today)
-
 
         report=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').values('part','balQty','HoldingValue').order_by('part')
         print("Report---->",report)
@@ -350,33 +346,17 @@ class HoldingReportExport(APIView):
         # print("Hold Rs--->",total_holdRs)
 
         total_qty=Master_Report_Total['bal_qty_total']
+        total_qty=int(total_qty)
         # print("Total Qty",total_qty)
        
-        ls=[]
+       
         for data in report:
             holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
             data['balQty']=int(data['balQty'])
             # print("DDDD",data['balQty'])
             data['holding_Per']=holding_Per
             data['balQty']=data['balQty']
-            # print("Holdin g%-->",holding_Per)
-            # holding_percentage={'holding%':round(data['HoldingValue']/total_holdRs*100,2)}
-            
-            # ls.append(holding_percentage)
-            # print('ls',ls)
-            
            
-            # print(data['HoldingValue']/total_holdRs*100)
-       
-       
-
-
-
-        # re=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy).values('againstType','fy')
-        # type=re[0]['againstType']
-        # fy=re[0]['fy']
-        # print("Master     Records--->",type,fy)
-
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
         # print(':Member-------->',member)
        
@@ -392,13 +372,10 @@ class HoldingReportExport(APIView):
             'againstType':againstType,
             'dfy':dfy,
             'today':today
-            # 'holding_Per':holding_Per
-
         }
        
 
         html = render_to_string(template_path,context )
-        # print (html)
 
         pisaStatus = pisa.CreatePDF(html, dest=response)
        
