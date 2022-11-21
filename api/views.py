@@ -342,8 +342,11 @@ class HoldingReportExport(APIView):
 
         total_holdRs=Master_Report_Total['hold_val_total']
         total_holdRs=0 if total_holdRs is None else total_holdRs
-
+        # total_holdRs=f"{total_holdRs:}"
         total_holdRs=round(total_holdRs,2)
+        # f"{data['HoldingValue']:,}"
+    
+        
         # print("Hold Rs--->",total_holdRs)
 
         total_qty=Master_Report_Total['bal_qty_total']
@@ -357,7 +360,8 @@ class HoldingReportExport(APIView):
             data['balQty']=int(data['balQty'])
             # print("DDDD",data['balQty'])
             data['holding_Per']=holding_Per
-            data['balQty']=data['balQty']
+            data['balQty']=f"{data['balQty']:,d}"
+            data['HoldingValue']=f"{data['HoldingValue']:,}"
            
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
         # print(':Member-------->',member)
