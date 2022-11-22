@@ -53,11 +53,11 @@
 
 
   </div>
+  {% comment %} <h1>{{page_num}}</h1> {% endcomment %}
   <table id="customers"align="center">
     <p id='date'>Run Date :{{today}}</p>
   
     <tr>
-    
       <th scope="col" style="text-align:center;font-size:11px;font-weight:bold;padding-top:5px;">S.N</th>
       <th scope="col" style="text-align:left;font-size:11px;font-weight:bold;padding-top:5px;">Script</th>
       <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Qty</th>
@@ -88,9 +88,9 @@
       <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">100%</td>
       <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;  ">{{total_holdRs}}</td>
     </tr>
-    
+   
   </table>
-  {% comment %} Page <pdf:pagenumber> of <pdf:pagecount> {% endcomment %}
+
 
 </body>
 </html>
