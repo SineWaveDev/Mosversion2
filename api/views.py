@@ -21,9 +21,9 @@ from django.template.loader import get_template
 from django.conf import settings
 from django.http import HttpResponse
 from datetime import  datetime
-
 from rest_framework.pagination import PageNumberPagination
 
+from reportlab.pdfgen import canvas
 
 
 # <-------------------- SavePurch API ---------------------->
@@ -333,18 +333,20 @@ class HoldingReportExport(APIView):
         dfy = self.request.query_params.get('dfy')
 
         today = datetime.today().strftime("%d/%m/%Y")
-        print("today-->",today)
+        # print("today-->",today)
 
         report=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').values('part','balQty','HoldingValue').order_by('part')
-        print("Report---->",report)
+        # print("Report---->",report)
         Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
         # print("Masssssss",Master_Report_Total)
 
         total_holdRs=Master_Report_Total['hold_val_total']
         total_holdRs=0 if total_holdRs is None else total_holdRs
-        # total_holdRs=f"{total_holdRs:}"
         total_holdRs=round(total_holdRs,2)
-        # f"{data['HoldingValue']:,}"
+        total_holdRs=f'{total_holdRs:,}'
+      
+    
+        print("Total--->",total_holdRs)
     
         
         # print("Hold Rs--->",total_holdRs)
@@ -356,12 +358,12 @@ class HoldingReportExport(APIView):
        
        
         for data in report:
-            holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
+            # holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
             data['balQty']=int(data['balQty'])
-            # print("DDDD",data['balQty'])
-            data['holding_Per']=holding_Per
+            # data['holding_Per']=holding_Per
             data['balQty']=f"{data['balQty']:,d}"
             data['HoldingValue']=f"{data['HoldingValue']:,}"
+          
            
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
         # print(':Member-------->',member)
@@ -369,7 +371,11 @@ class HoldingReportExport(APIView):
         template_path = 'report.html'
 
         response = HttpResponse(content_type='application/pdf')
+       
         response['Content-Disposition'] = 'attachment; filename="Report.pdf"'
+        # reader = PdfReader("Report.pdf")
+
+       
         context={
             'report': report,
             'member':member,
@@ -377,11 +383,18 @@ class HoldingReportExport(APIView):
             'total_qty':total_qty,
             'againstType':againstType,
             'dfy':dfy,
-            'today':today
+            'today':today,
+        
+        
         }
+       
+       
+           
+       
        
 
         html = render_to_string(template_path,context )
+        # print(html)
 
         pisaStatus = pisa.CreatePDF(html, dest=response)
        
