@@ -215,7 +215,7 @@ class RetHolding(APIView):
         dfy = self.request.query_params.get('dfy')
         againstType = self.request.query_params.get('againstType')
         
-        holding = TranSum.objects.filter(group=group,code=code,againstType=againstType).values('part').order_by().annotate(total_balQty=Sum('balQty')).annotate(invVal=Sum(F('rate')*F('balQty'))).annotate(mktVal=Sum(F('balQty')*F('marketRate')))
+        holding = TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by().annotate(total_balQty=Sum('balQty')).annotate(invVal=Sum(F('rate')*F('balQty'))).annotate(mktVal=Sum(F('balQty')*F('marketRate')))
         # print("Ballllllll--->",holding)
         
         ls=[]
@@ -324,7 +324,7 @@ class RetChangeDefault(APIView):
         return Response({'status':True,'msg':'done','data':serializer.data})
 
 
-
+#  <---------------------- HoldingReportExport ----------------->
 class HoldingReportExport(APIView):
     def get(self,request):
         group = self.request.query_params.get('group')
@@ -338,18 +338,11 @@ class HoldingReportExport(APIView):
         report=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').values('part','balQty','HoldingValue').order_by('part')
         # print("Report---->",report)
         Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
-        # print("Masssssss",Master_Report_Total)
-
+      
         total_holdRs=Master_Report_Total['hold_val_total']
         total_holdRs=0 if total_holdRs is None else total_holdRs
         total_holdRs=round(total_holdRs,2)
-        total_holdRs=f'{total_holdRs:,}'
-      
-    
-        print("Total--->",total_holdRs)
-    
-        
-        # print("Hold Rs--->",total_holdRs)
+        # total_holdRs=f'{total_holdRs:,}'
 
         total_qty=Master_Report_Total['bal_qty_total']
         total_qty=0 if total_qty is None else total_qty
@@ -358,9 +351,10 @@ class HoldingReportExport(APIView):
        
        
         for data in report:
-            # holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
+            holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
+        
             data['balQty']=int(data['balQty'])
-            # data['holding_Per']=holding_Per
+            data['holding_Per']=holding_Per
             data['balQty']=f"{data['balQty']:,d}"
             data['HoldingValue']=f"{data['HoldingValue']:,}"
           
@@ -368,7 +362,62 @@ class HoldingReportExport(APIView):
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
         # print(':Member-------->',member)
        
-        template_path = 'report.html'
+        template_path = 'Reports/HoldingReport.html'
+
+        response = HttpResponse(content_type='application/pdf')
+       
+        response['Content-Disposition'] = 'attachment; filename="Report.pdf"'
+        # reader = PdfReader("Report.pdf")
+        context={
+            'report': report,
+            'member':member,
+            'total_holdRs':total_holdRs,
+            'total_qty':total_qty,
+            'againstType':againstType,
+            'dfy':dfy,
+            'today':today,
+        }
+        html = render_to_string(template_path,context )
+        # print(html)
+        pisaStatus = pisa.CreatePDF(html, dest=response)
+        return response
+       
+class HoldingReport_Profit_Adjuste(APIView):
+    def get(self,request):
+        group = self.request.query_params.get('group')
+        code = self.request.query_params.get('code')
+        againstType = self.request.query_params.get('againstType')
+        dfy = self.request.query_params.get('dfy')
+
+        today = datetime.today().strftime("%d/%m/%Y")
+        # print("today-->",today)
+
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).annotate(total_rate=Sum('rate')).annotate(Purchase_Value=Sum(F('rate')*F('balQty'))).annotate(marketRate=Sum('marketRate'))
+        # print('Reports----->',report)
+        
+        Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(bal_qty_total=Sum('balQty'),final_total_rate=Sum('rate'),total_Purchase_value=Sum(F('rate')*F('balQty')))
+        # print("Master ------>",Master_Report_Total)
+      
+        total_qty=int(Master_Report_Total['bal_qty_total'])
+        total_qty=0 if total_qty is None else total_qty
+        total_qty=f"{total_qty:,}"
+        final_total_rate=f"{round(Master_Report_Total['final_total_rate'],2):,}"
+        total_Purchase_value=f"{round(Master_Report_Total['total_Purchase_value'],2):,}"
+
+        # print("total_Purchase_value",total_Purchase_value,type(total_Purchase_value))
+       
+       
+        for data in report:
+            data['part']=data['part']
+            data['total_balQty']=f"{data['total_balQty']:,}"
+            data['total_rate']= f"{data['total_rate']:,}"
+            data['Purchase_Value']=f"{round(data['Purchase_Value'],2):,}"
+            data['marketRate']=f"{round(data['marketRate'],2):,}"
+           
+        member=MemberMaster.objects.filter(group=group,code=code).values('name')
+        # print(':Member-------->',member)
+       
+        template_path = 'Reports/Holding Report (Profit Adjusted).html'
 
         response = HttpResponse(content_type='application/pdf')
        
@@ -379,20 +428,14 @@ class HoldingReportExport(APIView):
         context={
             'report': report,
             'member':member,
-            'total_holdRs':total_holdRs,
+            'final_total_rate':final_total_rate,
+            'total_Purchase_value':total_Purchase_value,
             'total_qty':total_qty,
             'againstType':againstType,
             'dfy':dfy,
             'today':today,
-        
-        
         }
        
-       
-           
-       
-       
-
         html = render_to_string(template_path,context )
         # print(html)
 
