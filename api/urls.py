@@ -16,7 +16,9 @@ urlpatterns = [
     path('updateCustomer/<int:pk>',views.CustomerUpdadeDelete.as_view()),
     path('customerLogin/',views.CustomerLogin.as_view()),
     path('retChangeDefault/',views.RetChangeDefault.as_view()),  
-    # path('retMasterReport/',views.RetMasterReport.as_view()),
+    # <=================== Report ==============================>
     path('holdingReportExport/',views.HoldingReportExport.as_view()),
-    path('holdingReport_Profit_Adjuste/',views.HoldingReport_Profit_Adjuste.as_view())
+    path('holdingReport_Profit_Adjusted/',views.HoldingReport_Profit_Adjusted.as_view()),
+    path('scriptwise_Profit_Report/',views.Scriptwise_Profit_Report.as_view()),
+    path('transactionReport/',views.TransactionReport.as_view()),
 ]
