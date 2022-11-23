@@ -22,7 +22,6 @@ from django.conf import settings
 from django.http import HttpResponse
 from datetime import  datetime
 from rest_framework.pagination import PageNumberPagination
-
 from reportlab.pdfgen import canvas
 
 
@@ -63,7 +62,6 @@ class SavePurch(APIView):
 
         dic = copy.deepcopy(request.data)
         dic["balQty"] = request.data["qty"]
-    
         serializer = SavePurchSerializer(data=dic)
         if serializer.is_valid():
             serializer.save()
@@ -73,9 +71,6 @@ class SavePurch(APIView):
             hold_val=primary['holding_Val']
             avg_rate=hold_val / bal_qty
             update_bal_qty=TranSum.objects.filter(group=request.data['group'],code=request.data['code'],part=request.data['part'],againstType=request.data['againstType'],fy=request.data['fy'],sp='M').update(balQty=bal_qty,HoldingValue=hold_val,avgRate=avg_rate)
-          
-            # print("Saving Records---->",serializer.data)
-          
             return Response({'status':True,'msg': 'You have successfully Created','data':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -86,8 +81,6 @@ class SavePrimaryAPI(APIView):
             primary=TranSum.objects.filter(sp='M').latest('sno')
         except:
             primary=0
-        # print("Primary RR",primary)
-        
         try:
             sno1=primary.sno
         except:
@@ -98,12 +91,8 @@ class SavePrimaryAPI(APIView):
         else:
             s=sno1+1
             # print("no",s)
-
         request.data['sno']=s
 
-        # if TranSum.objects.filter(scriptSno=0).exists():
-        #     pass
-        
         serializer = SaveMasterSerializer(data=request.data)
         if serializer.is_valid():
             primary=TranSum.objects.filter(part=request.data['part'] , sp='M')
@@ -216,8 +205,6 @@ class RetHolding(APIView):
         againstType = self.request.query_params.get('againstType')
         
         holding = TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by().annotate(total_balQty=Sum('balQty')).annotate(invVal=Sum(F('rate')*F('balQty'))).annotate(mktVal=Sum(F('balQty')*F('marketRate')))
-        # print("Ballllllll--->",holding)
-        
         ls=[]
         for data in holding:
             data_ls={'part':data['part'],'holdQty':int(data['total_balQty']),'invValue':float(data['invVal']),'mktVal':float(data['mktVal'])}
@@ -277,8 +264,7 @@ class SaveCustomer(APIView):
             gpp=str(gp)
             gpp=int(gpp)+1
             group=str(gpp).zfill(5)
-        # print("groupp",group)
-           
+       
         request.data['group'] = group       
         # print("requ grp",request.data.get("group"))
         serializer = SavecustomerSerializer(data=request.data)
@@ -333,8 +319,6 @@ class HoldingReportExport(APIView):
         dfy = self.request.query_params.get('dfy')
 
         today = datetime.today().strftime("%d/%m/%Y")
-        # print("today-->",today)
-
         report=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').values('part','balQty','HoldingValue').order_by('part')
         # print("Report---->",report)
         Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
@@ -342,31 +326,23 @@ class HoldingReportExport(APIView):
         total_holdRs=Master_Report_Total['hold_val_total']
         total_holdRs=0 if total_holdRs is None else total_holdRs
         total_holdRs=round(total_holdRs,2)
-        # total_holdRs=f'{total_holdRs:,}'
 
         total_qty=Master_Report_Total['bal_qty_total']
         total_qty=0 if total_qty is None else total_qty
         total_qty=int(total_qty)
-        # print("Total Qty",total_qty)
-       
-       
+
         for data in report:
             holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
-        
             data['balQty']=int(data['balQty'])
             data['holding_Per']=holding_Per
             data['balQty']=f"{data['balQty']:,d}"
             data['HoldingValue']=f"{data['HoldingValue']:,}"
-          
-           
+            
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
         # print(':Member-------->',member)
-       
         template_path = 'Reports/HoldingReport.html'
-
         response = HttpResponse(content_type='application/pdf')
-       
-        response['Content-Disposition'] = 'attachment; filename="Report.pdf"'
+        response['Content-Disposition'] = 'attachment; filename="Holding Report.pdf"'
         # reader = PdfReader("Report.pdf")
         context={
             'report': report,
@@ -381,8 +357,9 @@ class HoldingReportExport(APIView):
         # print(html)
         pisaStatus = pisa.CreatePDF(html, dest=response)
         return response
-       
-class HoldingReport_Profit_Adjuste(APIView):
+
+# <--------------------  HoldingReport_Profit_Adjuste -------------------->    
+class HoldingReport_Profit_Adjusted(APIView):
     def get(self,request):
         group = self.request.query_params.get('group')
         code = self.request.query_params.get('code')
@@ -404,9 +381,6 @@ class HoldingReport_Profit_Adjuste(APIView):
         final_total_rate=f"{round(Master_Report_Total['final_total_rate'],2):,}"
         total_Purchase_value=f"{round(Master_Report_Total['total_Purchase_value'],2):,}"
 
-        # print("total_Purchase_value",total_Purchase_value,type(total_Purchase_value))
-       
-       
         for data in report:
             data['part']=data['part']
             data['total_balQty']=f"{data['total_balQty']:,}"
@@ -416,15 +390,9 @@ class HoldingReport_Profit_Adjuste(APIView):
            
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
         # print(':Member-------->',member)
-       
         template_path = 'Reports/Holding Report (Profit Adjusted).html'
-
         response = HttpResponse(content_type='application/pdf')
-       
-        response['Content-Disposition'] = 'attachment; filename="Report.pdf"'
-        # reader = PdfReader("Report.pdf")
-
-       
+        response['Content-Disposition'] = 'attachment; filename="Holding Report-Profit Adjusted.pdf"'
         context={
             'report': report,
             'member':member,
@@ -435,12 +403,102 @@ class HoldingReport_Profit_Adjuste(APIView):
             'dfy':dfy,
             'today':today,
         }
-       
         html = render_to_string(template_path,context )
-        # print(html)
-
         pisaStatus = pisa.CreatePDF(html, dest=response)
+        return response
+
+# <---------------> Scriptwise_Profit_Report <------------->   
+class Scriptwise_Profit_Report(APIView):
+    def get(self,request):
+        group = self.request.query_params.get('group')
+        code = self.request.query_params.get('code')
+        againstType = self.request.query_params.get('againstType')
+        dfy = self.request.query_params.get('dfy')
+
+        today = datetime.today().strftime("%d/%m/%Y")
+        # print("today-->",today)
+
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty'))
+        # print('Reports----->',report)
+        
+        Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(bal_qty_total=Sum('balQty'))
+        print("Master ------>",Master_Report_Total)
+      
+        total_qty=int(Master_Report_Total['bal_qty_total'])
+        total_qty=0 if total_qty is None else total_qty
+        total_qty=f"{total_qty:,}"
        
+        for data in report:
+            data['part']=data['part']
+            data['total_balQty']= f"{data['total_balQty']:,}"
+
+           
+        member=MemberMaster.objects.filter(group=group,code=code).values('name')
+        # print(':Member-------->',member)
+       
+        template_path = 'Reports/Profit_Report(Scriptwise).html'
+
+        response = HttpResponse(content_type='application/pdf')
+       
+        response['Content-Disposition'] = 'attachment; filename="Profit_Report(Scriptwise).pdf"'
+    
+        context={
+            'report': report,
+            'total_qty':total_qty,
+            'member':member,
+            'againstType':againstType,
+            'dfy':dfy,
+            'today':today,
+        }
+        html = render_to_string(template_path,context )
+        pisaStatus = pisa.CreatePDF(html, dest=response)
         return response
        
+  
+class TransactionReport(APIView):
+    def get(self,request):
+        group = self.request.query_params.get('group')
+        code = self.request.query_params.get('code')
+        againstType = self.request.query_params.get('againstType')
+        dfy = self.request.query_params.get('dfy')
+
+        today = datetime.today().strftime("%d/%m/%Y")
+        # print("today-->",today)
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty'))
+        # print('Reports----->',report)
+        Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(bal_qty_total=Sum('balQty'))
+        print("Master ------>",Master_Report_Total)
+      
+        total_qty=int(Master_Report_Total['bal_qty_total'])
+        total_qty=0 if total_qty is None else total_qty
+        total_qty=f"{total_qty:,}"
+       
+        for data in report:
+            data['part']=data['part']
+            data['total_balQty']= f"{data['total_balQty']:,}"
+
+           
+        member=MemberMaster.objects.filter(group=group,code=code).values('name')
+        # print(':Member-------->',member)
+       
+        template_path = 'Reports/Transaction Report.html'
+
+        response = HttpResponse(content_type='application/pdf')
+       
+        response['Content-Disposition'] = 'attachment; filename="Transaction Report.pdf"'
+    
+        context={
+            'report': report,
+            'total_qty':total_qty,
+            'member':member,
+            'againstType':againstType,
+            'dfy':dfy,
+            'today':today,
+        }
+        html = render_to_string(template_path,context )
+        pisaStatus = pisa.CreatePDF(html, dest=response)
+        return response
+       
+  
+
   

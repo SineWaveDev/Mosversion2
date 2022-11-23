@@ -1,0 +1,145 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Report</title>
+
+    <style>
+        #customers {
+        
+          font-family: "Trebuchet MS", Tahoma, sans-serif;
+          font-weight: bold;
+         
+        }
+       
+        #customers td, #customers th {
+          border: 1px solid black;
+          padding: 2px;
+         
+        }
+        
+        #customers th {
+          text-align:left;
+          background-color:#808080;
+        
+        } 
+        td{
+          text-align: center;
+        }
+        h1,h2{
+          text-align:center ;
+          font-size:12px;
+          font-family: "Trebuchet MS", Tahoma, sans-serif;
+        }
+        #date{
+          font-size:10px;
+          margin-bottom: -50px; 
+          {% comment %} padding-left:1px; {% endcomment %}
+          font-family: "Trebuchet MS", Tahoma, sans-serif;  
+        }
+
+        @page {
+          size: letter landscape;
+          margin: 1cm;
+      }
+      
+      
+        
+
+        </style>
+</head>
+<body>
+  <div id="header_content">
+    <h1 style='padding-bottom:-10px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
+    <h1>Transaction Report ({{againstType}})</h1>
+  </div>
+
+
+  </div>
+  {% comment %} <h1>{{page_num}}</h1> {% endcomment %}
+  <table id="customers"align="center">
+    <p id='date'>Run Date :{{today}}</p>
+
+   <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th colspan="7" style="text-align:center;font-size:11px;font-weight:bold;padding-top:5px;">Sale</th>
+    <th colspan="7" style="text-align:center;font-size:11px;font-weight:bold;padding-top:5px;">Purchase</th>
+    <th></th>
+   </tr>
+    <tr>
+      <th scope="col" style="text-align:center;font-size:11px;font-weight:bold;padding-top:5px;">S.N</th>
+      <th scope="col" style="text-align:left;font-size:11px;font-weight:bold;padding-top:5px;">Script</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Trans Type</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Date</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Q</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">R</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">V</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">STT</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Oth</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Net</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Date</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Q</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">R</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">V</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">STT</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Oth</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Net</th>
+      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Profit</th> 
+
+   
+    {% for master in report  %}
+    
+    <tr>
+          <td style='font-size:10px;padding-top:5px;width:90px;'>{{forloop.counter}}</td>
+          <td style="text-align:left;font-size:10px;padding-top:5px;width:260px;"></td>
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td> 
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>   
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td> 
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>      
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>   
+    </tr>
+    {% endfor %}
+   
+    <tr style='background-color:#808080'>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;  ">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      
+    </tr> 
+   
+  </table>
+
+
+</body>
+</html>
