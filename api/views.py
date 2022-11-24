@@ -469,13 +469,12 @@ class TransactionReport(APIView):
         # print('Reports----->',report)
         Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(sVal_total=Sum('sVal'))
         # print("Master ------>",Master_Report_Total)
-      
-        sVal_total=int(Master_Report_Total['sVal_total'])
+        try:
+            sVal_total=int(Master_Report_Total['sVal_total'])
+            sVal_total=f"{sVal_total:,}"
+        except Exception:
+            raise TypeError("pass parameter group ,code type ,fy")
         
-        sVal_total=0 if sVal_total is None else sVal_total
-        sVal_total=f"{sVal_total:,}"
-      
-       
         for data in report:
             data['part']=data['part']
             Purchase_Date=data['trDate'].strftime("%d/%m/%Y")
