@@ -464,18 +464,27 @@ class TransactionReport(APIView):
 
         today = datetime.today().strftime("%d/%m/%Y")
         # print("today-->",today)
-        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty'))
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part','trDate','qty','rate','sVal','sttCharges','otherCharges','againstType')
+        # print("ALL Opening and Addition-->",report)
         # print('Reports----->',report)
-        Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(bal_qty_total=Sum('balQty'))
-        print("Master ------>",Master_Report_Total)
+        Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(sVal_total=Sum('sVal'))
+        # print("Master ------>",Master_Report_Total)
       
-        total_qty=int(Master_Report_Total['bal_qty_total'])
-        total_qty=0 if total_qty is None else total_qty
-        total_qty=f"{total_qty:,}"
+        sVal_total=int(Master_Report_Total['sVal_total'])
+        
+        sVal_total=0 if sVal_total is None else sVal_total
+        sVal_total=f"{sVal_total:,}"
+      
        
         for data in report:
             data['part']=data['part']
-            data['total_balQty']= f"{data['total_balQty']:,}"
+            Purchase_Date=data['trDate'].strftime("%d/%m/%Y")
+            data['trDate']=Purchase_Date
+            data['sVal']=f"{data['sVal']:,}"
+            data['qty']=f"{data['qty']:,}"
+            data['rate']=f"{data['rate']:,}"
+            # print(data['sVal'])
+           
 
            
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
@@ -489,7 +498,7 @@ class TransactionReport(APIView):
     
         context={
             'report': report,
-            'total_qty':total_qty,
+            'sVal_total':sVal_total,
             'member':member,
             'againstType':againstType,
             'dfy':dfy,

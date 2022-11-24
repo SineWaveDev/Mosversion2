@@ -96,8 +96,8 @@
     
     <tr>
           <td style='font-size:10px;padding-top:5px;width:90px;'>{{forloop.counter}}</td>
-          <td style="text-align:left;font-size:10px;padding-top:5px;width:260px;"></td>
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>
+          <td style="text-align:left;font-size:10px;padding-top:5px;width:260px;">{{master.part}}</td>
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.againstType}}</td>
           <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>
           <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td> 
           <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>   
@@ -105,13 +105,13 @@
           <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
           <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
           <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>      
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:230px;">{{master.trDate}}</td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.qty}}</td>      
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.rate}}</td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.sVal}}</td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.sttCharges}}</td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.otherCharges}}</td>  
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.sVal}}</td>  
           <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>   
     </tr>
     {% endfor %}
@@ -133,7 +133,7 @@
       <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
       <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
       <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">{{sVal_total}}</td>
       <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
       
     </tr> 
