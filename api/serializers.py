@@ -106,7 +106,7 @@ class RetTransSumSalesSerializer(serializers.ModelSerializer):
 class SaleSaveAPISerializer(serializers.ModelSerializer):
     class Meta:
         model=MOS_Sales
-        fields=['trId','group','code','ay','againstType','sDate','sqty','srate','sVal','stt','other']
+        fields=['trId','group','code','fy','againstType','sDate','sqty','srate','sVal','stt','other','scriptSno','purSno']
 
 
 # <------------------- RetSalesDetSerializer ------------------------->

@@ -48,4 +48,4 @@ class TranSumAdmin(admin.ModelAdmin):
 
 @admin.register(MOS_Sales)
 class MOS_SalesAdmin(admin.ModelAdmin):
-    list_display=('trId','group','code','ay','againstType','scriptSno','purSno','sDate','srate','sqty','sVal','stt_Paid','stt','other','speculation','stgc','ltgc','fno','empCode')
+    list_display=('trId','group','code','fy','againstType','scriptSno','purSno','sDate','srate','sqty','sVal','stt_Paid','stt','other','speculation','stgc','ltgc','fno','empCode')
