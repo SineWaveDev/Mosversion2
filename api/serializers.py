@@ -113,6 +113,13 @@ class SaleSaveAPISerializer(serializers.ModelSerializer):
 class RetSalesDetSerializer(serializers.ModelSerializer):
     class Meta:
         model=MOS_Sales
+        fields=['trId','sDate','sqty','srate','sVal','stt','other','scriptSno','purSno']
+
+
+# <------------------- RetSalesList Serializer ------------------------->
+class RetSalesListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=MOS_Sales
         fields=['trId','sDate','sqty','srate','sVal','stt','other']
 
 

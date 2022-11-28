@@ -1,5 +1,5 @@
 from decimal import Decimal
-from .models import TranSum,MemberMaster,CustomerMaster
+from .models import TranSum,MemberMaster,CustomerMaster,MOS_Sales
 from rest_framework import generics
 from rest_framework import status
 from django.db.models import Sum,Q,F
@@ -461,11 +461,14 @@ class TransactionReport(APIView):
         code = self.request.query_params.get('code')
         againstType = self.request.query_params.get('againstType')
         dfy = self.request.query_params.get('dfy')
+        type = self.request.query_params.get('type')
 
         today = datetime.today().strftime("%d/%m/%Y")
         # print("today-->",today)
-        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part','trDate','qty','rate','sVal','sttCharges','otherCharges','againstType')
-        # print("ALL Opening and Addition-->",report)
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).values('part','trDate','qty','rate','sVal','sttCharges','otherCharges','againstType')
+
+        mos_sales=MOS_Sales.objects.values('trId','sDate','sqty','srate','sVal','stt','other').filter(group=group,code=code,againstType=type)
+        print("mos_sales-->",mos_sales)
         # print('Reports----->',report)
         Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(sVal_total=Sum('sVal'))
         # print("Master ------>",Master_Report_Total)
@@ -482,12 +485,25 @@ class TransactionReport(APIView):
             data['sVal']=f"{data['sVal']:,}"
             data['qty']=f"{data['qty']:,}"
             data['rate']=f"{data['rate']:,}"
-            # print(data['sVal'])
+           
+           
+        # for data in mos_sales:
+        #     mos_transction={
+        #     'sdate':data['sDate'].strftime("%d/%m/%Y"),
+        #     'sqty':data['sqty'],
+        #     'srate':data['srate'],
+        #     'sVal':data['sVal'],
+        #     'stt':data['stt'],
+        #     'other':data['other']
+            
+        #     }
+
+        #     print("SSSS",mos_transction)
            
 
            
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
-        # print(':Member-------->',member)
+        print(':Member-------->',member)
        
         template_path = 'Reports/Transaction Report.html'
 
@@ -502,6 +518,7 @@ class TransactionReport(APIView):
             'againstType':againstType,
             'dfy':dfy,
             'today':today,
+            'mos_sales':mos_sales
         }
         html = render_to_string(template_path,context )
         pisaStatus = pisa.CreatePDF(html, dest=response)

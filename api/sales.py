@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.views import APIView
-from .serializers import RetTransSumSalesSerializer,RetSalesDetSerializer,SaleSaveAPISerializer
+from .serializers import RetTransSumSalesSerializer,RetSalesListSerializer,SaleSaveAPISerializer
 
 # <---------------------- RetSalesSum API ------------------->
 class RetSaleSum(APIView):
@@ -19,25 +19,7 @@ class RetSaleSum(APIView):
         return Response({'status':True,'msg': 'done','data':serializer.data})
 
 #<------------------------ SalesSaveAPI ------------------------>
-class SaleSaveAPI(APIView):
-    def get(self,request,format=None):
-        group = self.request.query_params.get('group')
-        code = self.request.query_params.get('code')
-        dfy = self.request.query_params.get('dfy')
-        part = self.request.query_params.get('part')
-        trId = self.request.query_params.get('trId')
-        againstType = self.request.query_params.get('againstType')
-        mos_transum=TranSum.objects.values('qty','rate','sVal').filter(group=group,code=code,fy=dfy,againstType=againstType,part=part,trId=trId)
-    
-        for data in mos_transum:
-            dic={'qty':data['qty']}
-            # print(dic)
-            ss=dic['qty']
-            # print(ss)
-        
-        # serializer=RetSalesDetSerializer(mos_transum,many=True)
-        return Response({'status':True,'msg':'done'})
-
+class RetSalesDet(APIView):
     def post(self, request, format=None):
         group = self.request.query_params.get('group')
         code = self.request.query_params.get('code')
@@ -60,37 +42,37 @@ class SaleSaveAPI(APIView):
         # Pur_qty=0 if Pur_qty is None or 0 else Pur_qty
        
         final_qty=Pur_qty-sell_sqty
-        
-
+    
         print("Final Qty-->",final_qty)
         up=TranSum.objects.filter(group=group,code=code,fy=dfy,againstType=againstType,part=part,trId=trId).update(qty=final_qty,balQty=final_qty)
 
-    
-        sell_api=MOS_Sales.objects.update(purSno=serial_no,scriptSno=scriptSno1)
-        # request.data['group']
-        # print("Group--->",sell_api)
+        sell_api=MOS_Sales.objects.filter(group=group,code=code,fy=dfy,againstType=againstType).update(purSno=serial_no)
         serializer = SaleSaveAPISerializer(data=request.data)
+
+        purSno=request.data['purSno']=serial_no
+        scriptSno=request.data['scriptSno']=scriptSno1
+
+        print(request.data['group'])
+
+        # print("purSno-->",purSno)
+        # print("scriptSno",scriptSno)
+       
         if serializer.is_valid():
             serializer.save() 
             return Response({'status':True,'msg': 'You have successfully Created','data':serializer.data}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# <---------------------- RetSalesDet API ------------------->
-class RetSalesDet(APIView):
+# <---------------------- RetSalesList API ------------------->
+class RetSalesList(APIView):
     def get(self,request,format=None):
         group = self.request.query_params.get('group')
         code = self.request.query_params.get('code')
         dfy = self.request.query_params.get('dfy')
-        part = self.request.query_params.get('part')
-        trId = self.request.query_params.get('trId')
+        # part = self.request.query_params.get('part')
+        # trId = self.request.query_params.get('trId')
         againstType = self.request.query_params.get('againstType')
-        mos_transum=TranSum.objects.values('qty','rate','sVal').filter(group=group,code=code,fy=dfy,againstType=againstType,part=part,trId=trId)
-    
-        for data in mos_transum:
-            dic={'qty':data['qty']}
-            print(dic)
-            ss=dic['qty']-300
-            print(ss)
-        
-        # serializer=RetSalesDetSerializer(mos_transum,many=True)
-        return Response({'status':True,'msg':'done'})
+        mos_sales=MOS_Sales.objects.values('trId','sDate','sqty','srate','sVal','stt','other').filter(group=group,code=code,fy=dfy,againstType=againstType)
+        # print(mos_sales)
+        # print("Data--->",mos_sales)
+        serializer=RetSalesListSerializer(mos_sales,many=True)
+        return Response({'status':True,'msg':'done','data':serializer.data})

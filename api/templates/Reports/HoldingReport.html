@@ -9,7 +9,7 @@
 
     <style>
         #customers {
-        
+          width: 100%;
           font-family: "Trebuchet MS", Tahoma, sans-serif;
           font-weight: bold;
          
@@ -37,12 +37,9 @@
         #date{
           font-size:10px;
           margin-bottom: -50px; 
-          padding-left:82px;
+          padding-left:125px;
           font-family: "Trebuchet MS", Tahoma, sans-serif;  
         }
-      
-        
-
         </style>
 </head>
 <body>
@@ -69,12 +66,12 @@
     {% for master in report  %}
     
     <tr>
-          <td style='font-size:10px;padding-top:5px;width:90px;'>{{forloop.counter}}</td>
+          <td style='font-size:10px;padding-top:5px;width:40px;'>{{forloop.counter}}</td>
           <td style="text-align:left;font-size:10px;padding-top:5px;width:190px;">{{master.part}}</td>
         
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:90px;">{{master.balQty}}</td>
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:60px;">{{master.balQty}}</td>
   
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:90px;">{{master.holding_Per}}%</td>
+          <td style="text-align:right;font-size:10px;padding-top:5px;width:80px;">{{master.holding_Per}}%</td>
     
           <td style="text-align:right;font-size:10px;padding-top:5px;width:90px;">{{master.HoldingValue}}</td>   
     </tr>
