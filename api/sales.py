@@ -20,6 +20,19 @@ class RetSaleSum(APIView):
 
 #<------------------------ SalesSaveAPI ------------------------>
 class RetSalesDet(APIView):
+    def get(self,request,format=None):
+        group = self.request.query_params.get('group')
+        code = self.request.query_params.get('code')
+        dfy = self.request.query_params.get('dfy')
+        # part = self.request.query_params.get('part')
+        # trId = self.request.query_params.get('trId')
+        againstType = self.request.query_params.get('againstType')
+        mos_sales=MOS_Sales.objects.values('trId','sDate','sqty','srate','sVal','stt','other').filter(group=group,code=code,fy=dfy,againstType=againstType)
+        # print(mos_sales)
+        # print("Data--->",mos_sales)
+        serializer=RetSalesListSerializer(mos_sales,many=True)
+        return Response({'status':True,'msg':'done','data':serializer.data})
+        
     def post(self, request, format=None):
         group = self.request.query_params.get('group')
         code = self.request.query_params.get('code')
