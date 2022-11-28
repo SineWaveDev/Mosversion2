@@ -31,11 +31,11 @@
         }
         h1,h2{
           text-align:center ;
-          font-size:12px;
+          font-size:14px;
           font-family: "Trebuchet MS", Tahoma, sans-serif;
         }
         #date{
-          font-size:10px;
+          font-size:12px;
           margin-bottom: -50px; 
           padding-left:125px;
           font-family: "Trebuchet MS", Tahoma, sans-serif;  
@@ -44,7 +44,7 @@
 </head>
 <body>
   <div id="header_content">
-    <h1 style='padding-bottom:-10px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
+    <h1 style='padding-bottom:-12px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
     <h1>Holding Report ({{againstType}})</h1>
   </div>
 
@@ -55,34 +55,34 @@
     <p id='date'>Run Date :{{today}}</p>
   
     <tr>
-      <th scope="col" style="text-align:center;font-size:11px;font-weight:bold;padding-top:5px;">S.N</th>
-      <th scope="col" style="text-align:left;font-size:11px;font-weight:bold;padding-top:5px;">Script</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Qty</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Holding %</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Holding(Rs)</th>
+      <th scope="col" style="text-align:center;font-size:13px;font-weight:bold;padding-top:5px;">S.N</th>
+      <th scope="col" style="text-align:left;font-size:13px;font-weight:bold;padding-top:5px;">Script</th>
+      <th scope="col" style="text-align:right;font-size:13px;font-weight:bold;padding-top:5px;">Qty</th>
+      <th scope="col" style="text-align:right;font-size:13px;font-weight:bold;padding-top:5px;">Holding %</th>
+      <th scope="col" style="text-align:right;font-size:13px;font-weight:bold;padding-top:5px;">Holding(Rs)</th>
     </tr>
   
    
     {% for master in report  %}
     
     <tr>
-          <td style='font-size:10px;padding-top:5px;width:40px;'>{{forloop.counter}}</td>
-          <td style="text-align:left;font-size:10px;padding-top:5px;width:190px;">{{master.part}}</td>
+          <td style='font-size:12px;padding-top:5px;width:40px;'>{{forloop.counter}}</td>
+          <td style="text-align:left;font-size:12px;padding-top:5px;width:190px;">{{master.part}}</td>
         
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:60px;">{{master.balQty}}</td>
+          <td style="text-align:right;font-size:12px;padding-top:5px;width:60px;">{{master.balQty}}</td>
   
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:80px;">{{master.holding_Per}}%</td>
+          <td style="text-align:right;font-size:12px;padding-top:5px;width:80px;">{{master.holding_Per}}%</td>
     
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:90px;">{{master.HoldingValue}}</td>   
+          <td style="text-align:right;font-size:12px;padding-top:5px;width:90px;">{{master.HoldingValue}}</td>   
     </tr>
     {% endfor %}
   
     <tr style='background-color:#808080'>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Total</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">{{total_qty}}</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">100%</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;  ">{{total_holdRs}}</td>
+      <td style="text-align:right;font-size:13px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:13px;font-weight:bold;padding-top:5px;">Total</td>
+      <td style="text-align:right;font-size:13px;font-weight:bold;padding-top:5px;">{{total_qty}}</td>
+      <td style="text-align:right;font-size:13px;font-weight:bold;padding-top:5px;">100%</td>
+      <td style="text-align:right;font-size:13px;font-weight:bold;padding-top:5px;  ">{{total_holdRs}}</td>
     </tr>
    
   </table>
