@@ -31,11 +31,11 @@
         }
         h1,h2{
           text-align:center ;
-          font-size:12px;
+          font-size:16px;
           font-family: "Trebuchet MS", Tahoma, sans-serif;
         }
         #date{
-          font-size:10px;
+          font-size:15px;
           margin-bottom: -50px; 
           {% comment %} padding-left:1px; {% endcomment %}
           font-family: "Trebuchet MS", Tahoma, sans-serif;  
@@ -43,7 +43,7 @@
 
         @page {
           size: letter landscape;
-          margin: 1cm;
+          margin: 0.4cm;
       }
       
       
@@ -53,7 +53,7 @@
 </head>
 <body>
   <div id="header_content">
-    <h1 style='padding-bottom:-10px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
+    <h1 style='padding-bottom:-15px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
     <h1>Transaction Report ({{againstType}})</h1>
   </div>
 
@@ -67,76 +67,75 @@
     <th></th>
     <th></th>
     <th></th>
-    <th colspan="7" style="text-align:center;font-size:11px;font-weight:bold;padding-top:5px;">Sale</th>
-    <th colspan="7" style="text-align:center;font-size:11px;font-weight:bold;padding-top:5px;">Purchase</th>
+    <th colspan="7" style="text-align:center;font-size:16px;font-weight:bold;padding-top:5px;">Sale</th>
+    <th colspan="7" style="text-align:center;font-size:16px;font-weight:bold;padding-top:5px;">Purchase</th>
     <th></th>
    </tr>
     <tr>
-      <th scope="col" style="text-align:center;font-size:11px;font-weight:bold;padding-top:5px;">S.N</th>
-      <th scope="col" style="text-align:left;font-size:11px;font-weight:bold;padding-top:5px;">Script</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Trans Type</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Date</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Q</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">R</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">V</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">STT</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Oth</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Net</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Date</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Q</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">R</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">V</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">STT</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Oth</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Net</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Profit</th> 
+      <th scope="col" style="text-align:center;font-size:16px;font-weight:bold;padding-top:5px;">S.N</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Date</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Script</th>
+      {% comment %} <th scope="col" style="text-align:left;font-size:16px;font-weight:bold;padding-top:5px;">Script</th> {% endcomment %}
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Qty</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Rate</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Value</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">STT</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Other</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Net</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Date</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Qty</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Rate</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Value</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">STT</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Other</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Net</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Profit</th> 
 
    
     {% for master in report  %}
     {% comment %} {% for mos in mos_sales %} {% endcomment %}
     <tr>
-          <td style='font-size:10px;padding-top:5px;width:90px;'>{{forloop.counter}}</td>
-          <td style="text-align:left;font-size:10px;padding-top:5px;width:260px;">{{master.part}}</td>
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.againstType}}</td>
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{mos.sDate}}</td>
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{mos.sqty}}</td> 
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{mos.srate}}</td>   
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{mos.srate}}</td> 
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{mos.sVal}}</td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{mos.stt}}</td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{mos.other}}</td> 
+          <td style='font-size:15px;padding-top:5px;width:90px;'>{{forloop.counter}}</td>
+          <td style="text-align:left;font-size:15px;padding-top:5px;width:260px;"></td>
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:400px;">{{master.part}}</td>
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:190px;">{{mos.sqty}}</td> 
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:190px;">{{mos.srate}}</td>    
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:190px;">{{mos.sVal}}</td>  
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:190px;">{{mos.stt}}</td>  
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:190px;">{{mos.other}}</td>
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:290px;"></td>
      
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:230px;">{{master.trDate}}</td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.qty}}</td>      
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.rate}}</td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.sVal}}</td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.sttCharges}}</td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.otherCharges}}</td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;">{{master.sVal}}</td>  
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:190px;"></td>   
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:300px;">{{master.trDate}}</td>  
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:190px;">{{master.qty}}</td>      
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:190px;">{{master.rate}}</td>  
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:290px;">{{master.sVal}}</td>  
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:190px;">{{master.sttCharges}}</td>  
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:190px;">{{master.otherCharges}}</td>  
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:290px;">{{master.sVal}}</td>  
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:190px;"></td>   
     </tr>
     {% endfor %}
     {% comment %} {% endfor %} {% endcomment %}
    
     <tr style='background-color:#808080'>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;  ">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">{{sVal_total}}</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      {% comment %} <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td> {% endcomment %}
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;  ">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">{{sVal_total}}</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
       
     </tr> 
    

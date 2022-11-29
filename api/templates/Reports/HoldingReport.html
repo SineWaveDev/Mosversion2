@@ -11,7 +11,8 @@
         #customers {
           width: 100%;
           font-family: "Trebuchet MS", Tahoma, sans-serif;
-          font-weight: bold;
+         
+          {% comment %} font-weight: bold; {% endcomment %}
          
         }
        
@@ -78,7 +79,7 @@
     {% endfor %}
   
     <tr style='background-color:#808080'>
-      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;padding-top:5px;"> </td>
       <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Total</td>
       <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">{{total_qty}}</td>
       <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">100%</td>
