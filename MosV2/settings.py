@@ -81,23 +81,23 @@ AUTH_USER_MODEL = 'api.CustomerMaster'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'mosversion2',
-#         'USER': 'dbmasteruser',
-#         'PASSWORD': 'F1Sa;Z*=d98<|}w)k_nYi!z[~08guTG,',
-#         'HOST': 'ls-bccc2fac76b6dd4422d627d7bee601b73ebd77c1.cm6oxswmcm8k.ap-south-1.rds.amazonaws.com',   # Or an IP Address that your DB is hosted on
-#         'PORT': '3306',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mosversion2',
+        'USER': 'dbmasteruser',
+        'PASSWORD': 'F1Sa;Z*=d98<|}w)k_nYi!z[~08guTG,',
+        'HOST': 'ls-bccc2fac76b6dd4422d627d7bee601b73ebd77c1.cm6oxswmcm8k.ap-south-1.rds.amazonaws.com',   # Or an IP Address that your DB is hosted on
+        'PORT': '3306',
+    }
+}
 
 
 # Password validation

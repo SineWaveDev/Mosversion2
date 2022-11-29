@@ -11,7 +11,7 @@
         #customers {
         
           font-family: "Trebuchet MS", Tahoma, sans-serif;
-          font-weight: bold;
+          {% comment %} font-weight: bold; {% endcomment %}
          
         }
        
@@ -31,15 +31,20 @@
         }
         h1,h2{
           text-align:center ;
-          font-size:12px;
+          font-size:16px;
           font-family: "Trebuchet MS", Tahoma, sans-serif;
         }
         #date{
-          font-size:10px;
+          font-size:15px;
           margin-bottom: -50px; 
-          {% comment %} padding-left:1px; {% endcomment %}
+          padding-left:45px;
           font-family: "Trebuchet MS", Tahoma, sans-serif;  
         }
+        @page {
+          size: letter landscape;
+          margin: 1cm;
+      }
+      
       
         
 
@@ -47,7 +52,7 @@
 </head>
 <body>
   <div id="header_content">
-    <h1 style='padding-bottom:-10px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
+    <h1 style='padding-bottom:-15px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
     <h1>Holding Report (Profit Adjusted - {{againstType}})</h1>
   </div>
 
@@ -58,42 +63,42 @@
     <p id='date'>Run Date :{{today}}</p>
   
     <tr>
-      <th scope="col" style="text-align:center;font-size:11px;font-weight:bold;padding-top:5px;">S.N</th>
-      <th scope="col" style="text-align:left;font-size:11px;font-weight:bold;padding-top:5px;">Script</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Profit %</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Profit (Rs)</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Holding Qty</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Purchase Price</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Purchase Value</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Mkt Rate</th>
+      <th scope="col" style="text-align:center;font-size:16px;font-weight:bold;padding-top:5px;">S.N</th>
+      <th scope="col" style="text-align:left;font-size:16px;font-weight:bold;padding-top:5px;">Script</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Profit %</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Profit (Rs)</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Holding Qty</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Purchase Price</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Purchase Value</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Mkt Rate</th>
     </tr>
 
    
     {% for master in report  %}
     
     <tr>
-          <td style='font-size:10px;padding-top:5px;width:90px;'>{{forloop.counter}}</td>
-          <td style="text-align:left;font-size:10px;padding-top:5px;width:190px;">{{master.part}}</td>
+          <td style='font-size:15px;padding-top:5px;width:47px;'>{{forloop.counter}}</td>
+          <td style="text-align:left;font-size:15px;padding-top:5px;width:190px;">{{master.part}}</td>
         
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:90px;">0.00%</td>
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:90px;">0.00%</td>
   
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:90px;">0.00</td>
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:90px;">{{master.total_balQty}}</td> 
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:120px;">{{master.total_rate}}</td>   
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:120px;">{{master.Purchase_Value}}</td> 
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:90px;">{{master.marketRate}}</td>      
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:90px;">0.00</td>
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:115px;">{{master.total_balQty}}</td> 
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:130px;">{{master.total_rate}}</td>   
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:130px;">{{master.Purchase_Value}}</td> 
+          <td style="text-align:right;font-size:15px;padding-top:5px;width:90px;">{{master.marketRate}}</td>      
     </tr>
     {% endfor %}
    
     <tr style='background-color:#808080'>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Total</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;  ">{{total_qty}}</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">{{final_total_rate}}</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">{{total_Purchase_value}}</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;"> </td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">Total</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;"> </td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;"> </td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">{{total_qty}}</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">{{final_total_rate}}</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;">{{total_Purchase_value}}</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;padding-top:5px;"> </td>
     </tr>
    
   </table>
