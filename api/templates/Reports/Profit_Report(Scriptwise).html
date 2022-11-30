@@ -37,7 +37,7 @@
         #date{
           font-size:15px;
           margin-bottom: -15px; 
-          padding-left:146px;
+          {% comment %} padding-left:146px; {% endcomment %}
           font-family: "Trebuchet MS", Tahoma, sans-serif;  
         }
        
@@ -63,6 +63,9 @@
       <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Qty</th>
       <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Profit %</th>
       <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Profit(Rs)</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">STGC</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">LTGC</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Speculation</th>
     </tr>
   
     {% for master in report  %}
@@ -75,7 +78,10 @@
   
           <td style="text-align:right;font-size:15px;width:70px;line-height:0px;">0.00%</td>
     
-          <td style="text-align:right;font-size:15px;width:90px;line-height:0px;">0.00</td>   
+          <td style="text-align:right;font-size:15px;width:90px;line-height:0px;">0.00</td> 
+          <td style="text-align:right;font-size:15px;width:90px;line-height:0px;"> </td>
+          <td style="text-align:right;font-size:15px;width:90px;line-height:0px;"> </td>
+          <td style="text-align:right;font-size:15px;width:120px;line-height:0px;"> </td>  
     </tr>
     {% endfor %}
   
@@ -84,6 +90,9 @@
       <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Total</td>
       {% comment %} <td style="text-align:right;font-size:16px;font-weight:bold;">{{total_qty}}</td> {% endcomment %}
       <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">{{total_qty}}</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
       <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
       <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
     </tr>

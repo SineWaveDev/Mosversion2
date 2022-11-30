@@ -40,15 +40,19 @@
           padding-left:0px;
           font-family: "Trebuchet MS", Tahoma, sans-serif;  
         }
-        {% comment %} @page {
+
+        @page {
           size: letter landscape;
-          margin: 1cm;
-      } {% endcomment %}
+          margin: 0.4cm;
+      }
+      
+
+       
       
       
         
 
-        </style>
+      </style>
 </head>
 <body>
   <div id="header_content">
@@ -71,6 +75,9 @@
       <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Purchase Price</th>
       <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Purchase Value</th>
       <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Mkt Rate</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">STGC</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">LTGC</th>
+      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Speculation</th>
     </tr>
 
    
@@ -78,15 +85,19 @@
     
     <tr>
           <td style='font-size:15px;width:47px;line-height:0px;'>{{forloop.counter}}</td>
-          <td style="text-align:left;font-size:15px;width:190px;line-height:0px;">{{master.part}}</td>
+          <td style="text-align:left;font-size:15px;width:220px;line-height:0px;">{{master.part}}</td>
         
           <td style="text-align:right;font-size:15px;width:120px;line-height:0px;">0.00%</td>
   
           <td style="text-align:right;font-size:15px;width:120px;line-height:0px;">0.00</td>
-          <td style="text-align:right;font-size:15px;width:120px;line-height:0px;">{{master.total_balQty}}</td> 
-          <td style="text-align:right;font-size:15px;width:150px;line-height:0px;">{{master.total_rate}}</td>   
-          <td style="text-align:right;font-size:15px;width:150px;line-height:0px;">{{master.Purchase_Value}}</td> 
-          <td style="text-align:right;font-size:15px;width:90px;line-height:0px;">{{master.marketRate}}</td>      
+          <td style="text-align:right;font-size:15px;width:140px;line-height:0px;">{{master.total_balQty}}</td> 
+          <td style="text-align:right;font-size:15px;width:180px;line-height:0px;">{{master.total_rate}}</td>   
+          <td style="text-align:right;font-size:15px;width:180px;line-height:0px;">{{master.Purchase_Value}}</td> 
+          <td style="text-align:right;font-size:15px;width:110px;line-height:0px;">{{master.marketRate}}</td>
+          <td style="text-align:right;font-size:15px;width:90px;line-height:0px;"> </td>
+          <td style="text-align:right;font-size:15px;width:90px;line-height:0px;"> </td>
+          <td style="text-align:right;font-size:15px;width:140px;line-height:0px;"> </td>
+        
     </tr>
     {% endfor %}
    
@@ -98,6 +109,9 @@
       <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">{{total_qty}}</td>
       <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">{{final_total_rate}}</td>
       <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">{{total_Purchase_value}}</td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
       <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
     </tr>
    

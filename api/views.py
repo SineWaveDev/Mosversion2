@@ -319,8 +319,14 @@ class HoldingReportExport(APIView):
         dfy = self.request.query_params.get('dfy')
 
         today = datetime.today().strftime("%d/%m/%Y")
-        report=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').values('part','balQty','HoldingValue').order_by('part')
-        # print("Report---->",report)
+      
+        report=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').order_by('part').exclude(balQty=Decimal(0.00))
+        # print("Report --->",report)
+        for i in report:
+           print(i)
+           
+            
+       
         Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
       
         total_holdRs=Master_Report_Total['hold_val_total']
@@ -336,10 +342,16 @@ class HoldingReportExport(APIView):
         for data in report:
             holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
             data['balQty']=int(data['balQty'])
+
+            # if data['balQty'] != 0:
+            #     print(data['balQty'])
+    
             data['holding_Per']=holding_Per
             data['balQty']=f"{data['balQty']:,d}"
             data['HoldingValue']=f"{data['HoldingValue']:,}"
-            # print("Holding RS--------->",data['HoldingValue'],type(data['HoldingValue']))
+            # print("Holding RS--------->",data['balQty'])
+
+          
 
         total_holdRs=round(total_holdRs,2)
         total_holdRs=f"{total_holdRs:,}"
@@ -360,6 +372,8 @@ class HoldingReportExport(APIView):
             'dfy':dfy,
             'today':today,
         }
+
+        
         html = render_to_string(template_path,context )
         # print(html)
         pisaStatus = pisa.CreatePDF(html, dest=response)
