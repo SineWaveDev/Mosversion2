@@ -389,7 +389,7 @@ class HoldingReport_Profit_Adjusted(APIView):
         today = datetime.today().strftime("%d/%m/%Y")
         # print("today-->",today)
 
-        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).annotate(total_rate=Sum('rate')).annotate(Purchase_Value=Sum(F('rate')*F('balQty'))).annotate(marketRate=Sum('marketRate')).exclude(balQty=Decimal(0.00))
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).annotate(total_rate=Sum('rate')).annotate(Purchase_Value=Sum(F('rate')*F('balQty'))).annotate(marketRate=Sum('marketRate'))
         # print('Reports----->',report)
         
         Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(bal_qty_total=Sum('balQty'),final_total_rate=Sum('rate'),total_Purchase_value=Sum(F('rate')*F('balQty')))
@@ -401,9 +401,12 @@ class HoldingReport_Profit_Adjusted(APIView):
         final_total_rate=f"{round(Master_Report_Total['final_total_rate'],2):,}"
         total_Purchase_value=f"{round(Master_Report_Total['total_Purchase_value'],2):,}"
 
+       
+
         for data in report:
             data['part']=data['part']
-            data['total_balQty']=f"{data['total_balQty']:,}"
+            data['total_balQty']=int(data['total_balQty'])
+            # data['total_balQty']=f"{data['total_balQty']:,}"
             data['total_rate']= f"{data['total_rate']:,}"
             data['Purchase_Value']=f"{round(data['Purchase_Value'],2):,}"
             data['marketRate']=f"{round(data['marketRate'],2):,}"
