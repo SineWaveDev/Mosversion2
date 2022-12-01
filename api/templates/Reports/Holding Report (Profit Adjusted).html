@@ -31,11 +31,11 @@
         }
         h1,h2{
           text-align:center ;
-          font-size:16px;
+          font-size:18px;
           font-family: "Trebuchet MS", Tahoma, sans-serif;
         }
         #date{
-          font-size:15px;
+          font-size:18px;
           margin-bottom: -50px; 
           padding-left:0px;
           font-family: "Trebuchet MS", Tahoma, sans-serif;  
@@ -45,18 +45,12 @@
           size: letter landscape;
           margin: 0.4cm;
       }
-      
-
-       
-      
-      
-        
-
+    
       </style>
 </head>
 <body>
   <div id="header_content">
-    <h1 style='padding-bottom:-15px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
+    <h1 style='padding-bottom:-18px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
     <h1>Holding Report (Profit Adjusted - {{againstType}})</h1>
   </div>
 
@@ -67,52 +61,52 @@
     <p id='date'>Run Date :{{today}}</p>
   
     <tr>
-      <th scope="col" style="text-align:center;font-size:16px;font-weight:bold;line-height:0px;">S.N</th>
-      <th scope="col" style="text-align:left;font-size:16px;font-weight:bold;line-height:0px;">Script</th>
-      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Profit %</th>
-      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Profit (Rs)</th>
-      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Holding Qty</th>
-      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Purchase Price</th>
-      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Purchase Value</th>
-      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Mkt Rate</th>
-      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">STGC</th>
-      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">LTGC</th>
-      <th scope="col" style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Speculation</th>
+      <th scope="col" style="text-align:center;font-size:18px;font-weight:bold;line-height:0px;">S.N</th>
+      <th scope="col" style="text-align:left;font-size:18px;font-weight:bold;line-height:0px;">Script</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Profit %</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Profit (Rs)</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Holding Qty</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Purchase Price</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Purchase Value</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Mkt Rate</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">STGC</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">LTGC</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Speculation</th>
     </tr>
 
    
     {% for master in report  %}
     
     <tr>
-          <td style='font-size:15px;width:47px;line-height:0px;'>{{forloop.counter}}</td>
-          <td style="text-align:left;font-size:15px;width:220px;line-height:0px;">{{master.part}}</td>
+          <td style='font-size:17px;width:47px;line-height:0px;'>{{forloop.counter}}</td>
+          <td style="text-align:left;font-size:17px;width:220px;line-height:0px;">{{master.part}}</td>
         
-          <td style="text-align:right;font-size:15px;width:120px;line-height:0px;">0.00%</td>
+          <td style="text-align:right;font-size:17px;width:120px;line-height:0px;">0.00%</td>
   
-          <td style="text-align:right;font-size:15px;width:120px;line-height:0px;">0.00</td>
-          <td style="text-align:right;font-size:15px;width:140px;line-height:0px;">{{master.total_balQty}}</td> 
-          <td style="text-align:right;font-size:15px;width:180px;line-height:0px;">{{master.total_rate}}</td>   
-          <td style="text-align:right;font-size:15px;width:180px;line-height:0px;">{{master.Purchase_Value}}</td> 
-          <td style="text-align:right;font-size:15px;width:110px;line-height:0px;">{{master.marketRate}}</td>
-          <td style="text-align:right;font-size:15px;width:90px;line-height:0px;"> </td>
-          <td style="text-align:right;font-size:15px;width:90px;line-height:0px;"> </td>
-          <td style="text-align:right;font-size:15px;width:140px;line-height:0px;"> </td>
+          <td style="text-align:right;font-size:17px;width:120px;line-height:0px;">0.00</td>
+          <td style="text-align:right;font-size:17px;width:140px;line-height:0px;">{{master.total_balQty}}</td> 
+          <td style="text-align:right;font-size:17px;width:180px;line-height:0px;">{{master.total_rate}}</td>   
+          <td style="text-align:right;font-size:17px;width:180px;line-height:0px;">{{master.Purchase_Value}}</td> 
+          <td style="text-align:right;font-size:17px;width:110px;line-height:0px;">{{master.marketRate}}</td>
+          <td style="text-align:right;font-size:17px;width:90px;line-height:0px;"> </td>
+          <td style="text-align:right;font-size:17px;width:90px;line-height:0px;"> </td>
+          <td style="text-align:right;font-size:17px;width:150px;line-height:0px;"> </td>
         
     </tr>
     {% endfor %}
    
     <tr style='background-color:#808080'>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">Total</td>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">{{total_qty}}</td>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">{{final_total_rate}}</td>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;">{{total_Purchase_value}}</td>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
-      <td style="text-align:right;font-size:16px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Total</td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">{{total_qty}}</td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">{{final_total_rate}}</td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">{{total_Purchase_value}}</td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
     </tr>
    
   </table>

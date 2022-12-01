@@ -317,13 +317,12 @@ class HoldingReportExport(APIView):
         code = self.request.query_params.get('code')
         againstType = self.request.query_params.get('againstType')
         dfy = self.request.query_params.get('dfy')
-
+   
         today = datetime.today().strftime("%d/%m/%Y")
       
         report=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').order_by('part').exclude(balQty=Decimal(0.00))
         # print("Report --->",report)
-        for i in report:
-           print(i)
+       
            
             
        
@@ -390,7 +389,7 @@ class HoldingReport_Profit_Adjusted(APIView):
         today = datetime.today().strftime("%d/%m/%Y")
         # print("today-->",today)
 
-        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).annotate(total_rate=Sum('rate')).annotate(Purchase_Value=Sum(F('rate')*F('balQty'))).annotate(marketRate=Sum('marketRate'))
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).annotate(total_rate=Sum('rate')).annotate(Purchase_Value=Sum(F('rate')*F('balQty'))).annotate(marketRate=Sum('marketRate')).exclude(balQty=Decimal(0.00))
         # print('Reports----->',report)
         
         Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(bal_qty_total=Sum('balQty'),final_total_rate=Sum('rate'),total_Purchase_value=Sum(F('rate')*F('balQty')))
@@ -439,7 +438,7 @@ class Scriptwise_Profit_Report(APIView):
         today = datetime.today().strftime("%d/%m/%Y")
         # print("today-->",today)
 
-        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty'))
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).exclude(balQty=Decimal(0.00))
         # print('Reports----->',report)
         
         Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(bal_qty_total=Sum('balQty'))
