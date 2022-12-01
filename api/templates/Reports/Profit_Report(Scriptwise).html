@@ -11,7 +11,7 @@
         #customers {
         
           font-family: "Trebuchet MS", Tahoma, sans-serif;
-          font-weight: bold;
+          {% comment %} font-weight: bold; {% endcomment %}
          
         }
        
@@ -31,23 +31,23 @@
         }
         h1,h2{
           text-align:center ;
-          font-size:12px;
+          font-size:18px;
           font-family: "Trebuchet MS", Tahoma, sans-serif;
         }
         #date{
-          font-size:10px;
-          margin-bottom: -10px; 
-          padding-left:108px;
+          font-size:18px;
+          margin-bottom: -17px; 
+          {% comment %} padding-left:146px; {% endcomment %}
           font-family: "Trebuchet MS", Tahoma, sans-serif;  
         }
-      
+       
         
 
         </style>
 </head>
 <body>
   <div id="header_content">
-    <h1 style='padding-bottom:-10px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
+    <h1 style='padding-bottom:-17px'>{% for m in member %}{{m.name}}{% endfor %} (FY {{dfy}})</h1>
     <h1>Scriptwise Profit Report ({{againstType}})</h1>
   </div>
 
@@ -58,35 +58,43 @@
     <p id='date'>Run Date :{{today}}</p>
   
     <tr>
-      <th scope="col" style="text-align:center;font-size:11px;font-weight:bold;padding-top:5px;">S.N</th>
-      <th scope="col" style="text-align:left;font-size:11px;font-weight:bold;padding-top:5px;">Script</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Qty</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Profit %</th>
-      <th scope="col" style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Profit(Rs)</th>
+      <th scope="col" style="text-align:center;font-size:18px;font-weight:bold;line-height:0px;">S.N</th>
+      <th scope="col" style="text-align:left;font-size:18px;font-weight:bold;line-height:0px;">Script</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Qty</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Profit %</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Profit(Rs)</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">STGC</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">LTGC</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Speculation</th>
     </tr>
   
-   
     {% for master in report  %}
     
     <tr>
-          <td style='font-size:10px;padding-top:5px;width:90px;'>{{forloop.counter}}</td>
-          <td style="text-align:left;font-size:10px;padding-top:5px;width:150px;">{{master.part}}</td>
+          <td style='font-size:17px;width:40px;line-height:0px;'>{{forloop.counter}}</td>
+          <td style="text-align:left;font-size:17px;width:150px;line-height:0px;">{{master.part}}</td>
         
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:80px;">{{master.total_balQty}}</td>
+          <td style="text-align:right;font-size:17px;width:90px;line-height:0px;">{{master.total_balQty}}</td>
   
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:90px;">0.00%</td>
+          <td style="text-align:right;font-size:17px;width:90px;line-height:0px;">0.00%</td>
     
-          <td style="text-align:right;font-size:10px;padding-top:5px;width:90px;">0.00</td>   
+          <td style="text-align:right;font-size:17px;width:90px;line-height:0px;">0.00</td> 
+          <td style="text-align:right;font-size:17px;width:90px;line-height:0px;"> </td>
+          <td style="text-align:right;font-size:17px;width:90px;line-height:0px;"> </td>
+          <td style="text-align:right;font-size:17px;width:120px;line-height:0px;"> </td>  
     </tr>
     {% endfor %}
   
     <tr style='background-color:#808080'>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">Total</td>
-      {% comment %} <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">{{total_qty}}</td> {% endcomment %}
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;">{{total_qty}}</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;  ">--</td>
-      <td style="text-align:right;font-size:11px;font-weight:bold;padding-top:5px;  ">--</td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Total</td>
+      {% comment %} <td style="text-align:right;font-size:18px;font-weight:bold;">{{total_qty}}</td> {% endcomment %}
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">{{total_qty}}</td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
     </tr>
    
   </table>

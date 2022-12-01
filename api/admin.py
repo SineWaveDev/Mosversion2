@@ -50,4 +50,4 @@ class TranSumAdmin(admin.ModelAdmin):
 class MOS_SalesAdmin(admin.ModelAdmin):
     list_filter = ('group','code','fy','againstType')
     list_per_page = 10
-    list_display=('trId','group','code','fy','againstType','scriptSno','purSno','sDate','srate','sqty','sVal','stt_Paid','stt','other','speculation','stgc','ltgc','fno','empCode')
+    list_display=('trId','group','code','fy','againstType','scriptSno','purSno','sDate','srate','sqty','sVal','stt_Paid','stt','other','speculation','stcg','ltcg','fno','empCode')

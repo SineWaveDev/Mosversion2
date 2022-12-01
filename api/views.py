@@ -317,26 +317,44 @@ class HoldingReportExport(APIView):
         code = self.request.query_params.get('code')
         againstType = self.request.query_params.get('againstType')
         dfy = self.request.query_params.get('dfy')
-
+   
         today = datetime.today().strftime("%d/%m/%Y")
-        report=TranSum.objects.filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').values('part','balQty','HoldingValue').order_by('part')
-        # print("Report---->",report)
+      
+        report=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').order_by('part').exclude(balQty=Decimal(0.00))
+        # print("Report --->",report)
+       
+           
+            
+       
         Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
       
         total_holdRs=Master_Report_Total['hold_val_total']
         total_holdRs=0 if total_holdRs is None else total_holdRs
-        total_holdRs=round(total_holdRs,2)
+        # total_holdRs=round(total_holdRs,2)
+        # print('total_holdRs-------->',total_holdRs,type(total_holdRs))
 
         total_qty=Master_Report_Total['bal_qty_total']
         total_qty=0 if total_qty is None else total_qty
-        total_qty=int(total_qty)
+        total_qty=f"{total_qty:,}"
+        # print("Bal Qty====>",total_qty)
 
         for data in report:
             holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
             data['balQty']=int(data['balQty'])
+
+            # if data['balQty'] != 0:
+            #     print(data['balQty'])
+    
             data['holding_Per']=holding_Per
             data['balQty']=f"{data['balQty']:,d}"
             data['HoldingValue']=f"{data['HoldingValue']:,}"
+            # print("Holding RS--------->",data['balQty'])
+
+          
+
+        total_holdRs=round(total_holdRs,2)
+        total_holdRs=f"{total_holdRs:,}"
+        # print('total_holdRs-------->',total_holdRs,type(total_holdRs))
             
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
         # print(':Member-------->',member)
@@ -353,6 +371,8 @@ class HoldingReportExport(APIView):
             'dfy':dfy,
             'today':today,
         }
+
+        
         html = render_to_string(template_path,context )
         # print(html)
         pisaStatus = pisa.CreatePDF(html, dest=response)
@@ -381,9 +401,12 @@ class HoldingReport_Profit_Adjusted(APIView):
         final_total_rate=f"{round(Master_Report_Total['final_total_rate'],2):,}"
         total_Purchase_value=f"{round(Master_Report_Total['total_Purchase_value'],2):,}"
 
+       
+
         for data in report:
             data['part']=data['part']
-            data['total_balQty']=f"{data['total_balQty']:,}"
+            data['total_balQty']=int(data['total_balQty'])
+            # data['total_balQty']=f"{data['total_balQty']:,}"
             data['total_rate']= f"{data['total_rate']:,}"
             data['Purchase_Value']=f"{round(data['Purchase_Value'],2):,}"
             data['marketRate']=f"{round(data['marketRate'],2):,}"
@@ -418,7 +441,7 @@ class Scriptwise_Profit_Report(APIView):
         today = datetime.today().strftime("%d/%m/%Y")
         # print("today-->",today)
 
-        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty'))
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).exclude(balQty=Decimal(0.00))
         # print('Reports----->',report)
         
         Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(bal_qty_total=Sum('balQty'))

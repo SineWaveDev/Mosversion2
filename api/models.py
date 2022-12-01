@@ -161,8 +161,8 @@ class MOS_Sales(models.Model):
     stt=models.DecimalField(max_digits=65, decimal_places=2,blank=True,null=True)
     other=models.DecimalField(max_digits=65, decimal_places=2,blank=True,null=True)
     speculation=models.DecimalField(max_digits=65, decimal_places=2,blank=True,null=True)
-    stgc=models.DecimalField(max_digits=65, decimal_places=2,blank=True,null=True)
-    ltgc=models.DecimalField(max_digits=65, decimal_places=2,blank=True,null=True)
+    stcg=models.DecimalField(max_digits=65, decimal_places=2,blank=True,null=True)
+    ltcg=models.DecimalField(max_digits=65, decimal_places=2,blank=True,null=True)
     fno=models.DecimalField(max_digits=65, decimal_places=2,blank=True,null=True)
     empCode=models.CharField(max_length=10)
 
