@@ -2,7 +2,7 @@ from decimal import Decimal
 from .models import TranSum,MemberMaster,CustomerMaster,MOS_Sales
 from rest_framework import generics
 from rest_framework import status
-from django.db.models import Sum,Q,F
+from django.db.models import Sum,Q,F,Count
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django_filters.rest_framework import DjangoFilterBackend
@@ -23,6 +23,7 @@ from django.http import HttpResponse
 from datetime import  datetime
 from rest_framework.pagination import PageNumberPagination
 from reportlab.pdfgen import canvas
+
 
 
 # <-------------------- SavePurch API ---------------------->
@@ -387,14 +388,32 @@ class HoldingReport_Profit_Adjusted(APIView):
         dfy = self.request.query_params.get('dfy')
 
         today = datetime.today().strftime("%d/%m/%Y")
-        # print("today-->",today)
 
-        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).annotate(total_rate=Sum('rate')).annotate(Purchase_Value=Sum(F('rate')*F('balQty'))).annotate(marketRate=Sum('marketRate'))
-        # print('Reports----->',report)
+        total_Profit=MOS_Sales.objects.values('scriptSno').filter(group=group,code=code,fy=dfy).aggregate(all_profit=Sum(F('stcg')+F('ltcg')))
         
+        total_Profit=total_Profit['all_profit']
+        # print("Total PRofit",total_Profit)
+        # ss=MOS_Sales.objects.values('scriptSno','purSno').filter(group=group,code=code,fy=dfy).annotate(all_profit=Sum(F('stcg')+F('ltcg')))
+        # for i in ss:
+        #     print(i)
+        #     print('----------')
+       
+      
+        Profits=MOS_Sales.objects.values('scriptSno').filter(group=group,code=code,fy=dfy).annotate(profits=Sum(F('stcg')+F('ltcg')))
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).annotate(total_rate=Sum('rate')).annotate(Purchase_Value=Sum(F('rate')*F('balQty'))).annotate(marketRate=Sum('marketRate'))
+        for profit in Profits:
+            pro_dis={'profitRS':profit['profits']}
+            print(pro_dis)
+
+     
+       
+        # print('Reports----->',report)
+        # Pro_repo=Profits | report
+
+    
         Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(bal_qty_total=Sum('balQty'),final_total_rate=Sum('rate'),total_Purchase_value=Sum(F('rate')*F('balQty')))
         # print("Master ------>",Master_Report_Total)
-      
+
         total_qty=int(Master_Report_Total['bal_qty_total'])
         total_qty=0 if total_qty is None else total_qty
         total_qty=f"{total_qty:,}"
@@ -402,7 +421,7 @@ class HoldingReport_Profit_Adjusted(APIView):
         total_Purchase_value=f"{round(Master_Report_Total['total_Purchase_value'],2):,}"
 
        
-
+       
         for data in report:
             data['part']=data['part']
             data['total_balQty']=int(data['total_balQty'])
@@ -410,6 +429,13 @@ class HoldingReport_Profit_Adjusted(APIView):
             data['total_rate']= f"{data['total_rate']:,}"
             data['Purchase_Value']=f"{round(data['Purchase_Value'],2):,}"
             data['marketRate']=f"{round(data['marketRate'],2):,}"
+
+        
+
+        
+         
+            
+          
            
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
         # print(':Member-------->',member)
@@ -418,6 +444,7 @@ class HoldingReport_Profit_Adjusted(APIView):
         response['Content-Disposition'] = 'attachment; filename="Holding Report-Profit Adjusted.pdf"'
         context={
             'report': report,
+            'total_Profit':total_Profit,
             'member':member,
             'final_total_rate':final_total_rate,
             'total_Purchase_value':total_Purchase_value,
@@ -426,6 +453,7 @@ class HoldingReport_Profit_Adjusted(APIView):
             'dfy':dfy,
             'today':today,
         }
+    
         html = render_to_string(template_path,context )
         pisaStatus = pisa.CreatePDF(html, dest=response)
         return response
