@@ -10,7 +10,7 @@ from django.http import Http404
 from rest_framework.views import APIView
 from .serializers import (SavePurchSerializer,RetTransSumSerializer,
 SaveMemberSerializer,RetMemberSerializer,SavecustomerSerializer,
-RetChangeDefaultSerializer,CustomerLoginSerializer,TranSumRetrivesc2Serializer,SaveMasterSerializer,RetHoldingReportSerializer)
+RetChangeDefaultSerializer,CustomerLoginSerializer,TranSumRetrivesc2Serializer,SaveMasterSerializer,RetHoldingReportSerializer,)
 import copy
 from django.contrib.auth import authenticate
 from .renderers import UserRender
@@ -23,6 +23,7 @@ from django.http import HttpResponse
 from datetime import  datetime
 from rest_framework.pagination import PageNumberPagination
 from reportlab.pdfgen import canvas
+import json 
 
 
 
@@ -315,19 +316,40 @@ class RetChangeDefault(APIView):
 class HoldingReportExport(APIView):
     def get(self,request):
         group = self.request.query_params.get('group')
-        code = self.request.query_params.get('code')
+        # code = self.request.query_params.get('code')
         againstType = self.request.query_params.get('againstType')
         dfy = self.request.query_params.get('dfy')
    
         today = datetime.today().strftime("%d/%m/%Y")
-      
-        report=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').order_by('part').exclude(balQty=Decimal(0.00))
-        # print("Report --->",report)
-       
+
+        member=MemberMaster.objects.filter(group=group).values('code')
+        print("Member-->",member)
+        for i in member:
+            code1=i['code']
+            print(code1)
+            report=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code1,againstType=againstType,fy=dfy,sp='M').order_by('part').exclude(balQty=Decimal(0.00))
+            print("Report-->",report)
+        # ls=[]
+        # for i in member:
+        #     dic={'code':i['code']}
            
-            
+        #     # print(dic)
+        #     code=dic['code']
+        #     print(code)
+        #     report=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').order_by('part').exclude(balQty=Decimal(0.00),code=code)
+        #     # print("Report --->",report)
+        #     ls.append(report)
+        #     print('-------------')
+        #     print('data-->',ls)
+           
+        # all=TranSum.objects.values('code','part','balQty','HoldingValue').filter(group=group,againstType=againstType,fy=dfy,sp='M').distinct().order_by('part').exclude(balQty=Decimal(0.00))
+        # print("All --->",all)
+        # all=TranSum.objects.values('code').filter(group=group,againstType=againstType,fy=dfy).distinct()
+        # print("All --->",all)
+
        
-        Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
+        # report=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').order_by('part').exclude(balQty=Decimal(0.00),code=code)
+        Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code1,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
       
         total_holdRs=Master_Report_Total['hold_val_total']
         total_holdRs=0 if total_holdRs is None else total_holdRs
@@ -343,28 +365,26 @@ class HoldingReportExport(APIView):
             holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
             data['balQty']=int(data['balQty'])
 
-            # if data['balQty'] != 0:
-            #     print(data['balQty'])
-    
             data['holding_Per']=holding_Per
             data['balQty']=f"{data['balQty']:,d}"
             data['HoldingValue']=f"{data['HoldingValue']:,}"
             # print("Holding RS--------->",data['balQty'])
 
-          
 
         total_holdRs=round(total_holdRs,2)
         total_holdRs=f"{total_holdRs:,}"
         # print('total_holdRs-------->',total_holdRs,type(total_holdRs))
             
-        member=MemberMaster.objects.filter(group=group,code=code).values('name')
+        member=MemberMaster.objects.filter(group=group,code=code1).values('name')
         # print(':Member-------->',member)
         template_path = 'Reports/HoldingReport.html'
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="Holding Report.pdf"'
         # reader = PdfReader("Report.pdf")
+
         context={
             'report': report,
+            # 'all':all,
             'member':member,
             'total_holdRs':total_holdRs,
             'total_qty':total_qty,
@@ -372,12 +392,15 @@ class HoldingReportExport(APIView):
             'dfy':dfy,
             'today':today,
         }
-
+      
         
         html = render_to_string(template_path,context )
-        # print(html)
+
         pisaStatus = pisa.CreatePDF(html, dest=response)
+
         return response
+
+
 
 # <--------------------  HoldingReport_Profit_Adjuste -------------------->    
 class HoldingReport_Profit_Adjusted(APIView):
@@ -393,24 +416,18 @@ class HoldingReport_Profit_Adjusted(APIView):
         
         total_Profit=total_Profit['all_profit']
         # print("Total PRofit",total_Profit)
-        # ss=MOS_Sales.objects.values('scriptSno','purSno').filter(group=group,code=code,fy=dfy).annotate(all_profit=Sum(F('stcg')+F('ltcg')))
-        # for i in ss:
-        #     print(i)
-        #     print('----------')
+       
+
+        ProfitRS=MOS_Sales.objects.values('scriptSno').filter(group=group,code=code,fy=dfy).order_by('scriptSno').annotate(profits=Sum(F('stcg')+F('ltcg')))
+        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).annotate(total_rate=Sum('rate')).annotate(Purchase_Value=Sum(F('rate')*F('balQty'))).annotate(marketRate=Sum('marketRate'))
+       
+     
+        # print("Report---->",report)
+        # print('----------')
+        # print("ProfitsRS---->",ProfitRS)
        
       
-        Profits=MOS_Sales.objects.values('scriptSno').filter(group=group,code=code,fy=dfy).annotate(profits=Sum(F('stcg')+F('ltcg')))
-        report=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType,fy=dfy).values('part').order_by('part').annotate(total_balQty=Sum('balQty')).annotate(total_rate=Sum('rate')).annotate(Purchase_Value=Sum(F('rate')*F('balQty'))).annotate(marketRate=Sum('marketRate'))
-        for profit in Profits:
-            pro_dis={'profitRS':profit['profits']}
-            print(pro_dis)
 
-     
-       
-        # print('Reports----->',report)
-        # Pro_repo=Profits | report
-
-    
         Master_Report_Total=TranSum.objects.exclude(sp='M').filter(group=group,code=code,againstType=againstType).aggregate(bal_qty_total=Sum('balQty'),final_total_rate=Sum('rate'),total_Purchase_value=Sum(F('rate')*F('balQty')))
         # print("Master ------>",Master_Report_Total)
 
@@ -420,8 +437,6 @@ class HoldingReport_Profit_Adjusted(APIView):
         final_total_rate=f"{round(Master_Report_Total['final_total_rate'],2):,}"
         total_Purchase_value=f"{round(Master_Report_Total['total_Purchase_value'],2):,}"
 
-       
-       
         for data in report:
             data['part']=data['part']
             data['total_balQty']=int(data['total_balQty'])
@@ -430,13 +445,8 @@ class HoldingReport_Profit_Adjusted(APIView):
             data['Purchase_Value']=f"{round(data['Purchase_Value'],2):,}"
             data['marketRate']=f"{round(data['marketRate'],2):,}"
 
-        
 
-        
-         
-            
-          
-           
+      
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
         # print(':Member-------->',member)
         template_path = 'Reports/Holding Report (Profit Adjusted).html'
@@ -444,6 +454,7 @@ class HoldingReport_Profit_Adjusted(APIView):
         response['Content-Disposition'] = 'attachment; filename="Holding Report-Profit Adjusted.pdf"'
         context={
             'report': report,
+            'ProfitRS':ProfitRS,
             'total_Profit':total_Profit,
             'member':member,
             'final_total_rate':final_total_rate,
@@ -453,7 +464,12 @@ class HoldingReport_Profit_Adjusted(APIView):
             'dfy':dfy,
             'today':today,
         }
-    
+        # serializer=HoldingReport_Profit_AdjusteSerializer(context,many=True)
+        print(context,type(context))
+         
+        return Response(context)
+
+
         html = render_to_string(template_path,context )
         pisaStatus = pisa.CreatePDF(html, dest=response)
         return response
@@ -537,21 +553,6 @@ class TransactionReport(APIView):
             data['qty']=f"{data['qty']:,}"
             data['rate']=f"{data['rate']:,}"
            
-           
-        # for data in mos_sales:
-        #     mos_transction={
-        #     'sdate':data['sDate'].strftime("%d/%m/%Y"),
-        #     'sqty':data['sqty'],
-        #     'srate':data['srate'],
-        #     'sVal':data['sVal'],
-        #     'stt':data['stt'],
-        #     'other':data['other']
-            
-        #     }
-
-        #     print("SSSS",mos_transction)
-           
-
            
         member=MemberMaster.objects.filter(group=group,code=code).values('name')
         print(':Member-------->',member)

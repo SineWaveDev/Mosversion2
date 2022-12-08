@@ -60,7 +60,9 @@
   </div>
   {% comment %} <h1>{{page_num}}</h1> {% endcomment %}
   <table id="customers"align="center">
-    <p id='date'>Run Date :{{today}}</p>
+    <p id='date'>Run Date :{{todprofits}}</td>
+            
+          {% comment %} {% endfor %} {% endcomment %}ay}}</p>
   
     <tr >
       <th scope="col" style="text-align:center;font-size:18px;font-weight:bold;line-height:0px;">S.N</th>
@@ -76,14 +78,15 @@
 
    
     {% for master in report  %}
-    
+   
     <tr>
           <td  style='font-size:17px;width:47px;line-height:0px;'>{{forloop.counter}}</td>
           <td style="text-align:left;font-size:17px;width:220px;line-height:0px;">{{master.part}}</td>
         
           <td style="text-align:right;font-size:17px;width:110px;line-height:0px;">0.00%</td>
-  
-          <td style="text-align:right;font-size:17px;width:120px;line-height:0px;">{{total_stcg_ltcg}}</td>
+          {% comment %} {% for nextpr in Profits %} {% endcomment %}
+             <td style="text-align:right;font-size:17px;width:120px;line-height:0px;">{{profitrs.profits}}
+          {% comment %} <td style="text-align:right;font-size:17px;width:120px;line-height:0px;">{{total_stcg_ltcg}}</td> {% endcomment %}
           <td style="text-align:right;font-size:17px;width:130px;line-height:0px;">{{master.total_balQty}}</td> 
           <td style="text-align:right;font-size:17px;width:160px;line-height:0px;">{{master.total_rate}}</td>   
           <td style="text-align:right;font-size:17px;width:140px;line-height:0px;">{{master.Purchase_Value}}</td> 
