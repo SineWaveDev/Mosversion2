@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holding Report</title>
+
+    <style>
+        #customers {
+          width: 100%;
+          font-family: "Trebuchet MS", Tahoma, sans-serif;
+         
+          {% comment %} font-weight: bold; {% endcomment %}
+         
+        }
+       
+        #customers td, #customers th {
+          border: 1px solid black;
+          padding: 2px;
+         
+        }
+        
+        #customers th {
+          text-align:left;
+          background-color:#808080;
+        
+        } 
+        td{
+          text-align: center;
+        }
+        h1,h2{
+          text-align:center ;
+          font-size:18px;
+          font-family: "Trebuchet MS", Tahoma, sans-serif;
+        }
+        #date{
+          font-size:18px;
+          margin-bottom: -50px; 
+          padding-left:76px;
+          font-family: "Trebuchet MS", Tahoma, sans-serif;  
+        }
+      
+        </style>
+</head>
+<body>
+  {% for i in ls %}
+  <div id="header_content">
+    <h1 style='padding-bottom:-18px'>{% for m in member_master %} {{m.name}} {% endfor %}(FY {{dfy}})</h1>
+    <h1>Holding Report ({{againstType}})</h1>
+  </div>
+
+
+  </div>
+  {% comment %} <h1>{{page_num}}</h1> {% endcomment %}
+
+  <table id="customers"align="center">
+    <p id='date'>Run Date :{{today}}</p>
+  
+    <tr>
+      <th scope="col" style="text-align:center;font-size:18px;font-weight:bold;line-height:0px;">S.N</th>
+      <th scope="col" style="text-align:left;font-size:18px;font-weight:bold;line-height:0px;">Script</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Qty</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Holding %</th>
+      <th scope="col" style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Holding(Rs)</th>
+    </tr>
+  
+   
+    {% for master in i   %}
+    
+    <tr>
+          <td style='font-size:18px;width:40px;line-height:0px;'>{{forloop.counter}}</td>
+          <td style="text-align:left;font-size:18px;width:190px;line-height:0px;">{{master.part }}</td>
+          <td style="text-align:right;font-size:18px;width:99px;line-height:0px;">{{master.balQty}}</td>
+          <td style="text-align:right;font-size:18px;width:120px;line-height:0px;">{{master.holding_Per}}%</td>
+          <td style="text-align:right;font-size:18px;width:120px;line-height:0px;">{{master.HoldingValue}}</td> 
+    </tr>
+    {% endfor %}
+  
+    <tr style='background-color:#808080'>
+      <td style="text-align:right;font-size:18px;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">Total</td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;"> </td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px;">100%</td>
+      <td style="text-align:right;font-size:18px;font-weight:bold;line-height:0px; ">{{total_holdRs}}</td>
+    </tr>
+   
+  </table>
+{% endfor %}
+
+
+
+
+
+</body>
+</html>
