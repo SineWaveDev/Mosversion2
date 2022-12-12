@@ -130,6 +130,13 @@ class RetHoldingReportSerializer(serializers.ModelSerializer):
         fields=['part','balQty','HoldingValue']
 
 
+# ----------------- HoldingReport_Profit_Adjuste ----------------------->
+class HoldingReport_Profit_AdjusteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=MOS_Sales
+        fields=['trId']
+
+
 
 
 
