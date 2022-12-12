@@ -478,18 +478,29 @@ class HoldingReportExportAll(APIView):
         # code = self.request.query_params.get('code')
         againstType = self.request.query_params.get('againstType')
         dfy = self.request.query_params.get('dfy')
-   
         today = datetime.today().strftime("%d/%m/%Y")
-
         member=MemberMaster.objects.filter(group=group).values('code')
-        print("Member-->",member)
+        # print("Member-->",member)
         ls=[]
-        # master_total=[]
         for i in member:
             code1=i['code']
-            print(code1)
+            # print(code1)
             Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code1,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
-      
+            # print("Master-->",Master_Report_Total)
+            TotalHolding=Master_Report_Total['hold_val_total']
+            TotalQty=Master_Report_Total['bal_qty_total']
+            TotalQty=f"{round(TotalQty,2):,}"
+            TotalHolding=f"{round(TotalHolding,2):,}"
+            # master_ls=[]
+            mast={'TotalHolding':TotalHolding,'TotalQty':TotalQty}
+            # print(mast)
+           
+            # master_ls.append(mast)
+            # print("m",master_ls)
+            # print("TotalHolding-->",TotalHolding)
+            # print('TotalQty-->',TotalQty)
+           
+        
             total_holdRs=Master_Report_Total['hold_val_total']
             total_holdRs=0 if total_holdRs is None else total_holdRs
             report=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code1,againstType=againstType,fy=dfy,sp='M').order_by('part').exclude(balQty=Decimal(0.00))
@@ -497,24 +508,14 @@ class HoldingReportExportAll(APIView):
             for data in report:
                 holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
                 data['holding_Per']=holding_Per
-                
                 data['balQty']=int(data['balQty'])
                 data['HoldingValue']=f"{round(data['HoldingValue'],2):,}"
-                # print(data)
-                # print("HoldRE Qty-->",data['HoldingValue'])
-            #  Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code1,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
             ls.append(report)
-            
-            #  master_total.append(Master_Report_Total)
-        # print("report-->",ls)
-
-        # report=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code,againstType=againstType,fy=dfy,sp='M').order_by('part').exclude(balQty=Decimal(0.00))
-        # print("Report--->",report)
-        # Master_Report_Total=TranSum.objects.values('part','balQty','HoldingValue').filter(group=group,code=code1,againstType=againstType,sp='M').aggregate(hold_val_total=Sum('HoldingValue'),bal_qty_total=Sum('balQty'))
+        
       
         total_holdRs=Master_Report_Total['hold_val_total']
         total_holdRs=0 if total_holdRs is None else total_holdRs
-        # total_holdRs=round(total_holdRs,2)
+        total_holdRs=round(total_holdRs,2)
         # print('total_holdRs-------->',total_holdRs,type(total_holdRs))
 
         total_qty=Master_Report_Total['bal_qty_total']
@@ -523,34 +524,22 @@ class HoldingReportExportAll(APIView):
         # print("Bal Qty====>",total_qty)
 
         
-
-        
-           
-
-        # for data in ls:
-        #     holding_Per=round(data['HoldingValue']/total_holdRs*100,2)
-        #     data['balQty']=int(data['balQty'])
-        #     data['holding_Per']=holding_Per
-        #     # data['balQty']=f"{data['balQty']:,d}"
-        #     data['HoldingValue']=f"{round(data['HoldingValue'],2):,}"
-        #     # print("Bal Qty--------->",data['holding_Per'])
-
         total_holdRs=round(total_holdRs,2)
         total_holdRs=f"{total_holdRs:,}"
-        # print('total_holdRs-------->',total_holdRs,type(total_holdRs))
+
+       
             
-        member=MemberMaster.objects.filter(group=group,code=code1).values('name')
+        member=MemberMaster.objects.filter(group=group).values('name')
         # print(':Member-------->',member)
         template_path = 'Reports/HoldingReport-all.html'
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = 'attachment; filename="Holding Report.pdf"'
         # reader = PdfReader("Report.pdf")
        
-
+    
         context={
             'report': report,
-            'ls':ls,
-            # 'all':all,
+            'ls':ls,  
             'member':member,
             'total_holdRs':total_holdRs,
             'total_qty':total_qty,
